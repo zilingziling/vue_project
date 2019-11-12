@@ -33,28 +33,30 @@ Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
 
-Vue.filter('priceParse',(price)=> { //可以有很多的自定义过滤器
-      return Math.abs(price)
-},)
+Vue.filter('priceParse', price => {
+  // 可以有很多的自定义过滤器
+  return Math.abs(price)
+})
 
-Vue.filter('toDecimal',(price)=> { //可以有很多的自定义过滤器
-      let prices = Math.abs(price)
-      var f = parseFloat(prices);  
-      if (isNaN(f)) {  
-          return false;  
-      }  
-      var f = Math.round(prices*100)/100;  
-      var s = f.toString();  
-      var rs = s.indexOf('.');  
-      if (rs < 0) {  
-          rs = s.length;  
-          s += '.';  
-      }  
-      while (s.length <= rs + 2) {  
-          s += '0';  
-      }  
-      return s
-},)
+Vue.filter('toDecimal', price => {
+  // 可以有很多的自定义过滤器
+  const prices = Math.abs(price)
+  var f = parseFloat(prices)
+  if (isNaN(f)) {
+    return false
+  }
+  var f = Math.round(prices * 100) / 100
+  var s = f.toString()
+  var rs = s.indexOf('.')
+  if (rs < 0) {
+    rs = s.length
+    s += '.'
+  }
+  while (s.length <= rs + 2) {
+    s += '0'
+  }
+  return s
+})
 
 new Vue({
   el: '#app',
