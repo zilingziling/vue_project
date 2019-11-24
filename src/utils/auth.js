@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 const TokenKey = 'vue_admin_template_token'
 
 export function getToken() {
-  return Cookies.get('key')
+  return window.localStorage.getItem("token")
 }
 
 export function setToken(token) {
@@ -11,5 +11,5 @@ export function setToken(token) {
 }
 
 export function removeToken() {
-  return Cookies.remove('key')
+  return window.localStorage.clear()
 }

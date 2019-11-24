@@ -8,6 +8,7 @@ import {
     logout
   } from '@/api/user';
   import { resetRouter } from '@/router'
+import { removeToken } from '../../utils/auth'
 export default {
 	name: 'Logout',
 	data() {
@@ -24,12 +25,13 @@ export default {
 	methods: {
     logout(){
       logout().then(res=>{
-        if (res.code == 200) {
+        if (res.code == 0) {
 		  this.$router.push({path:'/login'})
-		  
+
           resetRouter()
         }
       })
+
     }
   },
 	created() {

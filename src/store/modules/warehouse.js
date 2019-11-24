@@ -1,31 +1,22 @@
-import { login, logout, jishu } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
-import { resetRouter } from '@/router'
-import Cookies from 'js-cookie'
+import { getWareList } from '../../api/warehouse'
+
 const state = {
-  token: getToken(),
+  data: [],
   name: '',
   avatar: ''
 }
 
 const mutations = {
-  SET_TOKEN: (state, token) => {
-    state.token = token
+  SET_DATA: (state, data) => {
+    state.data = data
   },
-  SET_NAME: (state, name) => {
-    state.name = name
-  },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
-  }
+
 }
 
 const actions = {
   // user login
-  login({ commit }, userInfo) {
-    const { username, password } = userInfo
-    return new Promise((resolve, reject) => {
-      login({ userName: username.trim(), password: password }).then(response => {
+  getList({ commit }, p) {
+    getWareList({...p}).then(response => {
         const { data } = response;
         console.log(data)
         //设置cookie
@@ -35,17 +26,12 @@ const actions = {
         // Cookies.set('uid', data.uid)
         // Cookies.set('key', data.key)
         // Cookies.set('username', data.username)
-        // commit('SET_TOKEN', data.token)
-        window.localStorage.setItem("token",data.token)
-        setToken(data.token)
+        commit('SET_DATA', data.list)
         resolve()
       }).catch(error => {
         reject(error)
       })
-    })
-  },
-
-
+    },
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {

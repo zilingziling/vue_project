@@ -3,8 +3,8 @@ import request from '@/utils/request'
 // 获取仓库信息
 export function getList(params) {
   return request({
-    url: '/ebapi/index_page/cangku',
-    method: 'get',
+    url: '/shoe/inventory',
+    method: 'post',
     params
   })
 }
@@ -63,7 +63,7 @@ export function search(params) {
 // 入库
 export function storage(params) {
   return request({
-    url: '/ebapi/index_page/shangcangku',
+    url: '/shoe/inventory/add',
     method: 'post',
     params
   })
@@ -80,7 +80,7 @@ export function idStorage(params) {
 // 日志
 export function getLog(params) {
   return request({
-    url: '/ebapi/index_page/zuijinlt',
+    url: '/shoe/inventoryLog',
     method: 'get',
     params
   })

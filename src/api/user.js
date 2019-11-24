@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: '/ebapi/login_page',
+    url: '/phone/user/login',
     method: 'post',
     data
   })

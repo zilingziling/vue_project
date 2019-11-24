@@ -92,7 +92,7 @@
     created () {
       const that = this;
       jishu().then(response => {
-        if (response.code == 200) {
+        if (response.code == 0) {
           that.data = response.data;
         }
 			});
