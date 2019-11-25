@@ -7,9 +7,9 @@
           查看添加日志
           <img src="@/assets/warehouse/eyes.png" alt="" />
         </el-button>
-        <el-button class="top_button" @click="dialogSearchVisible = true">
-          <img src="@/assets/warehouse/add.png" alt="" /> 新增商品
-        </el-button>
+<!--        <el-button class="top_button" @click="dialogSearchVisible = true">-->
+<!--          <img src="@/assets/warehouse/add.png" alt="" /> 新增商品-->
+<!--        </el-button>-->
       </div>
     </div>
     <el-table
@@ -748,6 +748,7 @@ export default {
     };
   },
   created() {
+
     this.fetchData(this.p);
   },
   mounted(){
@@ -765,12 +766,11 @@ export default {
         console.log("到底不了")
         this.p.pageIndex++
         console.log(this.p.pageIndex)
-        // this.fetchData({
-        //   pageSize:this.p.pageSize,
-        //   pageIndex:this.p.pageIndex,
-        // })
-        console.log(getScrollHeight(),)
-        window.scrollBy(0, getScrollHeight())
+        this.fetchData({
+          pageSize:this.p.pageSize,
+          pageIndex:this.p.pageIndex,
+        })
+        window.scrollBy(0, -1400)
       }
     },
     sizeInputFocus(index) {
