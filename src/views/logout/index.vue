@@ -24,13 +24,13 @@ export default {
 	},
 	methods: {
     logout(){
-      logout().then(res=>{
-        if (res.code == 0) {
-		  this.$router.push({path:'/login'})
-
+      // logout().then(res=>{
+      //   if (res.code === 0) {
+      removeToken()
+      this.$router.push({path:'/login'})
           resetRouter()
-        }
-      })
+        // }
+      // })
 
     }
   },

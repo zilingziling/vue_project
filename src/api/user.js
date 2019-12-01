@@ -23,9 +23,15 @@ export function logout() {
   })
 }
 
-export function jishu() {
+export function getdashTop() {
   return request({
-    url: '/ebapi/index_page/jishu',
+    url: '/shoe/shoe/index/AllCount',
+    method: 'get'
+  })
+}
+export function getLineChart() {
+  return request({
+    url: '/shoe/shoe/index/echarts',
     method: 'get'
   })
 }

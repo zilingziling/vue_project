@@ -1,4 +1,4 @@
-import { login, logout, jishu } from '@/api/user'
+import { login, logout, getdashTop } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 import Cookies from 'js-cookie'
@@ -60,9 +60,9 @@ const actions = {
     })
   },
   // user logout
-  jishu({ commit, state }) {
+  getdashTop({ commit, state }) {
     return new Promise((resolve, reject) => {
-      jishu.then((res) => {
+      getdashTop.then((res) => {
         resolve()
       }).catch(error => {
         reject(error)

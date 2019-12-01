@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-text">首页</div>
-    <panel-group :chart-data="lineChartData" />
+    <panel-group :chart-data="panelGroup" />
     <el-row :gutter="8">
       <el-col>
         <div class="flex">
@@ -17,14 +17,14 @@
               <div class="flex data_wrap">
                 <div class="data_wrap_left">
                   <div class="minititle" style="margin-bottom:15px">入库（今日入库）</div>
-                  <span class="warehouse_data_number">{{ allData.today_input }} </span><span style="color:#4a4a4a">/双</span>
+                  <span class="warehouse_data_number">{{ allData.todayInCount }} </span><span style="color:#4a4a4a">/双</span>
                   <div style="width:100px;margin-top:20px">
                     <el-progress class="el-progress" :percentage="30" :stroke-width="4" :show-text="false" color="#24CCB8" />
                   </div>
                 </div>
                 <div class="data_wrap_right">
                   <div class="minititle" style="margin-bottom:15px">出库（今日出库）</div>
-                  <span class="warehouse_data_number">{{ allData.today_output }} </span><span style="color:#4a4a4a">/双</span>
+                  <span class="warehouse_data_number">{{ allData.todaySellCount }} </span><span style="color:#4a4a4a">/双</span>
                   <div style="width:100px;margin-top:20px">
                     <el-progress class="el-progress" :percentage="50" :stroke-width="4" :show-text="false" color="#FF5660" />
                   </div>
@@ -34,8 +34,8 @@
             <div class="warehouse_data_bottom">
               <img src="@/assets/index/data.png" alt="">
               <div>
-                <div class="minititle">毒到手总利润</div>
-                <div class="profit" :class="allData.total_toxic_price >= 0 ?'fc_red' :'fc_green'">{{ allData.total_toxic_price >= 0 ?'+' :'-' }}¥{{ allData.total_toxic_price | toDecimal }}</div>
+                <div class="minititle">本月利润</div>
+                <div class="profit" :class="allData.monthProfitCount >= 0 ?'fc_red' :'fc_green'">{{ allData.monthProfitCount >= 0 ?'+' :'-' }}¥{{ allData.monthProfitCount | toDecimal }}</div>
               </div>
             </div>
           </div>
@@ -51,14 +51,14 @@
               <img style="width:30rpx;height:30px;;margin-top:-3px" src="@/assets/index/sale.png" alt="">
               <div>
                 <div class="chart-wrapper-title">月销售量</div>
-                <span class="chart-wrapper-number">{{ allData.monthly_sales }}/</span><span>双</span>
+                <span class="chart-wrapper-number">{{ allData.monthSellCount }}/</span><span>双</span>
               </div>
             </div>
             <div class="pie_data flex">
               <img style="width:30rpx;height:30px;;margin-top:-3px" src="@/assets/index/remaining.png" alt="">
               <div>
                 <div class="chart-wrapper-title">商品剩余</div>
-                <span class="chart-wrapper-number">{{ allData.commodity_surplus }}/</span><span>双</span>
+                <span class="chart-wrapper-number">{{ allData.allNumCount }}/</span><span>双</span>
               </div>
             </div>
           </div>
@@ -72,14 +72,14 @@
               <img style="width:30rpx;height:30px;;margin-top:-3px" src="@/assets/index/profitt.png" alt="">
               <div>
                 <div class="chart-wrapper-title">月总盈亏</div>
-                <span class="chart-wrapper-number" :class="allData.month_total_profit >= 0 ?'fc_red' :'fc_green'">{{ allData.month_total_profit >= 0 ?'+' :'-' }}¥{{ allData.month_total_profit | priceParse }}</span>
+                <span class="chart-wrapper-number" :class="allData.monthProfitCount >= 0 ?'fc_red' :'fc_green'">{{ allData.monthProfitCount >= 0 ?'+' :'-' }}¥{{ allData.monthProfitCount | priceParse }}</span>
               </div>
             </div>
             <div class="pie_data flex">
               <img style="width:30rpx;height:30px;;margin-top:-3px" src="@/assets/index/profita.png" alt="">
               <div>
                 <div class="chart-wrapper-title">年总盈亏</div>
-                <span class="chart-wrapper-number" :class="allData.month_total_profit >= 0 ?'fc_red' :'fc_green'">{{ allData.month_total_profit >= 0 ?'+' :'-' }}¥{{ allData.month_total_profit | priceParse }}</span>
+                <span class="chart-wrapper-number" :class="allData.yearProfitCount >= 0 ?'fc_red' :'fc_green'">{{ allData.yearProfitCount >= 0 ?'+' :'-' }}¥{{ allData.yearProfitCount | priceParse }}</span>
               </div>
             </div>
           </div>
@@ -98,7 +98,7 @@
             <img style="width:30rpx;height:30px;;margin-top:-18px" src="@/assets/index/date.png" alt="">
             <div>
               <div class="chart-wrapper-title">数据更新日期</div>
-              <span class="chart-wrapper-number">{{ allData.update_time }}</span>
+              <span class="chart-wrapper-number">{{ allData.updateTime }}</span>
             </div>
           </div>
         </div>
@@ -112,7 +112,7 @@ import {
   mapGetters
 } from 'vuex'
 import {
-  jishu
+  getdashTop,getLineChart
 } from '@/api/user'
 import PanelGroup from './components/PanelGroup'
 import LineChart from './components/LineChart'
@@ -136,7 +136,13 @@ export default {
         xmonth: [],
         yprice: []
       },
-      allData: [],
+      allData: {},
+      panelGroup:{
+        shoeCount:0,
+        sizeCount:0,
+        priceInCount:0,
+        profitCount:0
+      },
       pieData1: [],
       pieData2: [],
       color: ['#F7535B', '#24CCB8']
@@ -147,37 +153,51 @@ export default {
   },
   created() {
     const that = this
-    jishu().then(response => {
-      if (response.code == 0) {
+    getdashTop().then(response => {
+      if (response.code ===0 ) {
+        console.log(response.data)
         that.allData = response.data
+        that.panelGroup = {
+          ...this.data,
+          ...response.data
+        };
         that.handleData(response.data)
+      }
+    })
+    getLineChart().then(response => {
+      if (response.code ===0 ) {
+        that.handleLine(response.data)
       }
     })
   },
   methods: {
     handleSetLineChartData() {},
-    handleData(opt) {
-      const lineChartD = opt.month_total_profit_array
+    handleLine(opt){
+      // const lineChartD = opt.month_total_profit_array
       const lineChartData = this.lineChartData
-      for (let i = 0; i < lineChartD.length; i++) {
-        lineChartData.xmonth.push(parseInt(lineChartD[i].month))
-        lineChartData.yprice.push(lineChartD[i].monthly_sales)
+
+      for (let i = 0; i < opt.length; i++) {
+        lineChartData.xmonth.push(parseInt(opt[i].date))
+        lineChartData.yprice.push(opt[i].price)
       }
+    },
+    handleData(opt) {
+      console.log(opt.monthSellCount)
       this.pieData1 = [{
-        value: opt.monthly_sales,
+        value: opt.monthSellCount,
         name: '月销售量'
       },
       {
-        value: opt.commodity_surplus,
+        value: opt.allNumCount,
         name: '商品剩余'
       }
       ]
       this.pieData2 = [{
-        value: opt.month_total_profit,
+        value: opt.monthProfitCount,
         name: '月总盈亏'
       },
       {
-        value: opt.year_total_profit,
+        value: opt.yearProfitCount,
         name: '年总盈亏'
       }
       ]

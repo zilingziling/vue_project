@@ -7,9 +7,9 @@
           查看添加日志
           <img src="@/assets/warehouse/eyes.png" alt="" />
         </el-button>
-<!--        <el-button class="top_button" @click="dialogSearchVisible = true">-->
-<!--          <img src="@/assets/warehouse/add.png" alt="" /> 新增商品-->
-<!--        </el-button>-->
+        <el-button class="top_button" @click="dialogSearchVisible = true">
+          <img src="@/assets/warehouse/add.png" alt="" /> 新增商品
+        </el-button>
       </div>
     </div>
     <el-table
@@ -133,7 +133,7 @@
         min-width="200"
       >
         <template slot-scope="list">
-          <el-button type="primary" @click="goodsOption(list.row.id)">
+          <el-button type="primary" @click="goodsOption(list.row)">
             入库/卖出</el-button
           >
           <div class="delectBtn" @click="delectBtn(list.row.id)">删除</div>
@@ -253,7 +253,7 @@
         ></el-input>
       </div>
       <!-- 搜索没有数据 -->
-      <div class="search_wrap_noData" v-if="searchData == ''">
+      <div class="search_wrap_noData" v-if="searchData.length === 0">
         <img src="@/assets/warehouse/shop.png" />
         <div class="search_tip">
           搜索的商品未搜索到，点击<span
@@ -269,14 +269,14 @@
           class="flex search_data_item"
           v-for="(item, index) in searchData"
           :key="index"
-          @click="idStorage(item.id)"
+          @click="idStorage(item)"
         >
           <div class="search_data_img">
-            <img :src="item.image" v-if="item.image" />
+            <img :src="item.img" v-if="item.img" />
           </div>
           <div>
-            <div class="search_data_name">{{ item.name }}</div>
-            <div class="search_data_model">{{ item.mun }}</div>
+            <div class="search_data_name">{{ item.shoeName }}</div>
+            <div class="search_data_model">{{ item.shoeNum }}</div>
           </div>
         </div>
       </div>
@@ -345,12 +345,12 @@
         />
         <div class="options_goods_detail">
           <div class="options_img">
-            <img :src="goodDetail.image" />
+            <img :src="goodDetail.img" />
           </div>
           <div class="options_detail">
-            <div class="options_name line3">{{ goodDetail.name }}</div>
+            <div class="options_name line3">{{ goodDetail.shoeName }}</div>
             <div class="flex jus-bet al-cen" style="margin-top:10px">
-              <div class="options_model">{{ goodDetail.mun }}</div>
+              <div class="options_model">{{ goodDetail.shoeNum }}</div>
             </div>
           </div>
         </div>
@@ -394,7 +394,7 @@
               class="sale_num_input"
               :min="0"
               @blur="intNumBlur($event)"
-              v-model.number="addSizeData.mun"
+              v-model.number="addSizeData.num"
             ></el-input>
           </div>
           <img src="@/assets/warehouse/add_number.png" alt="" @click="intAdd" />
@@ -417,12 +417,12 @@
         />
         <div class="options_goods_detail">
           <div class="options_img">
-            <img :src="goodDetail.image" />
+            <img :src="goodDetail.img" />
           </div>
           <div class="options_detail">
-            <div class="options_name line3">{{ goodDetail.name }}</div>
+            <div class="options_name line3">{{ goodDetail.shoeName }}</div>
             <div class="flex jus-bet al-cen" style="margin-top:10px">
-              <div class="options_model">{{ goodDetail.mun }}</div>
+              <div class="options_model">{{ goodDetail.shoeNum }}</div>
             </div>
           </div>
         </div>
@@ -446,7 +446,7 @@
               :min="0"
               :max="saleMaxnum"
               @blur="saleNumBlur($event)"
-              v-model.number="saleData.mun"
+              v-model.number="saleData.num"
             ></el-input>
           </div>
           <img
@@ -474,12 +474,12 @@
         />
         <div class="options_goods_detail">
           <div class="options_img">
-            <img :src="goodDetail.image" v-if="goodDetail.image" />
+            <img :src="goodDetail.img" v-if="goodDetail.img" />
           </div>
           <div class="options_detail">
-            <div class="options_name line3">{{ goodDetail.name }}</div>
+            <div class="options_name line3">{{ goodDetail.shoeName}} {{goodDetail.corlor}}</div>
             <div class="flex jus-bet al-cen" style="margin-top:10px">
-              <div class="options_model">{{ goodDetail.mun }}</div>
+              <div class="options_model">{{ goodDetail.shoeNum }}</div>
               <div class="addsize_button" @click="addSizeButton">
                 添加尺寸
                 <img src="@/assets/warehouse/add.png" />
@@ -518,7 +518,7 @@
 
           <el-table-column label="库存" min-width="89" align="center">
             <template slot-scope="goodSize">
-              <span>{{ goodSize.row.costmun }}</span>
+              <span>{{ goodSize.row.resultNum }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -528,18 +528,18 @@
             :cell-style="{ background: 'red' }"
           >
             <template slot-scope="goodSize">
-              <span>{{ goodSize.row.costprice }}</span>
+              <span>{{ goodSize.row.inPrice }}</span>
             </template>
           </el-table-column>
           <el-table-column label="入库总价" min-width="134" align="center">
             <template slot-scope="goodSize">
-              <span>{{ goodSize.row.allprice }}</span>
+              <span>{{ goodSize.row.priceIn }}</span>
             </template>
           </el-table-column>
           <el-table-column label="毒到手价" min-width="130" align="center">
             <template slot-scope="goodSize">
               <span class="moneyCell">￥</span>
-              <span class="numberCell">{{ goodSize.row.toxic_price }}</span>
+              <span class="numberCell">{{ goodSize.row.priceDo }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -553,17 +553,17 @@
                 class="moneyCell"
                 style="font-size:18px"
                 :class="
-                  goodSize.row.toxic_price_profit >= 0 ? 'fc_red' : 'fc_green'
+                  goodSize.row.priceProfit >= 0 ? 'fc_red' : 'fc_green'
                 "
-                >{{ goodSize.row.toxic_price_profit >= 0 ? "+" : "-" }}￥</span
+                >{{ goodSize.row.priceProfit >= 0 ? "+" : "-" }}￥</span
               >
               <span
                 class="numberCell"
                 style="font-size:18px"
                 :class="
-                  goodSize.row.toxic_price_profit >= 0 ? 'fc_red' : 'fc_green'
+                  goodSize.row.priceProfit >= 0 ? 'fc_red' : 'fc_green'
                 "
-                >{{ goodSize.row.toxic_price_profit | toDecimal }}</span
+                >{{ goodSize.row.priceProfit | toDecimal }}</span
               >
             </template>
           </el-table-column>
@@ -600,7 +600,9 @@ import {
   search,
   storage,
   idStorage,
-  getLog
+  getLog,
+  getSize,
+  getSoldList
 } from "@/api/table";
 import BackToTop from "@/components/BackToTop";
 import { getScrollHeight, getScrollTop, getWindowHeight } from '../../utils/methods'
@@ -646,81 +648,16 @@ export default {
       p:{
         pageIndex:1,
         pageSize:10,
-        totalPages:null,
+        shoeName:"",
+        totalPages:"",
+
       },
+
       sizeList: [
         {
           value: "36",
           isSelect: true
         },
-        {
-          value: "36.5",
-          isSelect: false
-        },
-        {
-          value: "37",
-          isSelect: false
-        },
-        {
-          value: "38",
-          isSelect: false
-        },
-        {
-          value: "38.5",
-          isSelect: false
-        },
-        {
-          value: "39",
-          isSelect: false
-        },
-        {
-          value: "40",
-          isSelect: false
-        },
-        {
-          value: "40.5",
-          isSelect: false
-        },
-        {
-          value: "41",
-          isSelect: false
-        },
-        {
-          value: "42",
-          isSelect: false
-        },
-        {
-          value: "42.5",
-          isSelect: false
-        },
-        {
-          value: "43",
-          isSelect: false
-        },
-        {
-          value: "44",
-          isSelect: false
-        },
-        {
-          value: "44.5",
-          isSelect: false
-        },
-        {
-          value: "45",
-          isSelect: false
-        },
-        {
-          value: "46",
-          isSelect: false
-        },
-        {
-          value: "47",
-          isSelect: false
-        },
-        {
-          value: "48",
-          isSelect: false
-        }
       ],
       sizeSelfData: [],
       goodDetail: {},
@@ -730,14 +667,18 @@ export default {
         size: 36,
         rid: 0,
         price: null,
-        mun: 1
+        num: 1,
+        inPrice:"",
+        shoeNum:""
       },
       saleData: {
         sizeid: 0,
         rid: 0,
         price: null,
         size: 0,
-        mun: 1
+        num: 1,
+        inPrice:'',
+        shoeNum:''
       },
       saleMaxnum: 0,
       storageData: {
@@ -748,8 +689,7 @@ export default {
     };
   },
   created() {
-
-    this.fetchData(this.p);
+    this.fetchData();
   },
   mounted(){
     window.addEventListener('scroll', this.handleScroll, true);
@@ -759,8 +699,19 @@ export default {
   },
   watch: {},
   methods: {
+    // 尺码
+    getSizeList(shoeNum) {
+      getSize({ pageIndex: 1, pageSize: 1000, shoeNum }).then(r => {
+        if (r.code === 0) {
+          let list = r.data.list
+          console.log(list)
+        }
+
+      })
+    },
     // 滚动事件
     handleScroll(){
+      console.log(1)
       let isBottom=getScrollHeight()-(Math.round(getScrollTop())+getWindowHeight())
       if(isBottom===0&&this.p.pageIndex!==this.p.totalPages){
         console.log("到底不了")
@@ -859,30 +810,43 @@ export default {
       return isJPG && isLt2M;
     },
     // 根据id入库
-    idStorage(id) {
+    idStorage(item) {
       const that = this;
-      idStorage({ id: id }).then(res => {
-        if (res.code == 0 && res.msg == "ok" && res.data == 1) {
-          that.searchData = [];
-          that.search_key = "";
-          that.hideDialog();
-          that.fetchData();
-          that.$message({
-            type: "success",
-            message: "操作成功!"
-          });
-        }
-      });
+      this.dialogSearchVisible=false
+      this.dialogSizeVisible=true
+      this.goodDetail=item
+      let size=item.size.split(",")
+      let list=[]
+        size.map(i=>list.push(
+          {
+            value:i,
+            isSelect:false
+          }
+        ))
+      this.sizeList=list
+      // this.getSizeList(item.shoeNum)
+      // idStorage({ id: id }).then(res => {
+      //   if (res.code == 0 && res.msg == "ok" && res.data == 1) {
+      //     that.searchData = [];
+      //     that.search_key = "";
+      //     that.hideDialog();
+      //     that.fetchData();
+      //     that.$message({
+      //       type: "success",
+      //       message: "操作成功!"
+      //     });
+      //   }
+      // });
     },
     // 搜索
     search(key) {
       const that = this;
-      if (key == "") {
+      if (key === "") {
         that.searchData = [];
         return false;
       }
-      search({ key: key }).then(res => {
-        that.searchData = res.data;
+      search({ pageSize:1000,pageIndex:1,shoeName:key }).then(res => {
+        that.searchData = res.data.list;
       });
     },
     // 卖鞋
@@ -890,8 +854,8 @@ export default {
       const that = this;
       let saleData = this.saleData;
       sale(saleData).then(res => {
-        if (res.code == 0 && res.msg == "ok" && res.data == 1) {
-          that.fetchData();
+        if (res.code === 0 ) {
+          that.fetchData(true);
           that.hideDialog();
           that.resetAddSizeData();
           that.$message({
@@ -920,8 +884,8 @@ export default {
     delectItem(id) {
       const that = this;
       delectItem({ id: id }).then(res => {
-        if (res.code == 0 && res.msg == "ok" && res.data == 1) {
-          that.fetchData();
+        if (res.code === 0) {
+          that.fetchData(true);
           that.$message({
             type: "success",
             message: "删除成功!"
@@ -936,22 +900,22 @@ export default {
     intNumBlur(e) {
       let addSizeData = this.addSizeData;
       if (e.target.value <= 0) {
-        addSizeData.mun = 1;
+        addSizeData.num = 1;
       }
       this.addSizeData = addSizeData;
     },
     intMinus() {
       let addSizeData = this.addSizeData;
-      if (addSizeData.mun == 1) {
+      if (addSizeData.num == 1) {
         return;
       } else {
-        addSizeData.mun--;
+        addSizeData.num--;
       }
       this.addSizeData = addSizeData;
     },
     intAdd() {
       let addSizeData = this.addSizeData;
-      addSizeData.mun++;
+      addSizeData.num++;
       this.addSizeData = addSizeData;
     },
     saleCheck_price(e) {
@@ -963,36 +927,36 @@ export default {
       console.log(this.saleMaxnum);
       let saleData = this.saleData;
       if (e.target.value <= 0) {
-        saleData.mun = 1;
+        saleData.num = 1;
       }
       if (e.target.value > this.saleMaxnum) {
         this.$message({
           type: "info",
           message: "卖出数量不能超过库存数量"
         });
-        saleData.mun = this.saleMaxnum;
+        saleData.num = this.saleMaxnum;
       }
       this.saleData = saleData;
     },
     saleMinus() {
       let saleData = this.saleData;
-      if (saleData.mun == 1) {
+      if (saleData.num == 1) {
         return;
       } else {
-        saleData.mun--;
+        saleData.num--;
       }
       this.saleData = saleData;
     },
     saleAdd() {
       let saleData = this.saleData;
-      if (saleData.mun == this.saleMaxnum) {
+      if (saleData.num == this.saleMaxnum) {
         this.$message({
           type: "info",
           message: "卖出数量不能超过库存数量"
         });
         return false;
       }
-      saleData.mun++;
+      saleData.num++;
       this.saleData = saleData;
     },
     sizeSelect(index) {
@@ -1011,7 +975,7 @@ export default {
       this.sizeList = sizeList;
       this.sizeSelfData = sizeSelfData;
     },
-    // 添加尺码
+    // 入库
     addSize() {
       const that = this;
       let addSizeData = this.addSizeData;
@@ -1023,21 +987,24 @@ export default {
           }
         }
       }
+      addSizeData.inPrice=this.goodDetail.inPrice
+      addSizeData.shoeNum=this.goodDetail.shoeNum
       addSize(addSizeData).then(res => {
-        if (res.code == 0 && res.msg == "ok" && res.data == 1) {
+        if (res.code === 0) {
           that.$message({
             message: "添加成功",
             type: "success",
             customClass: "zZindex"
           });
-          that.fetchData();
+          that.fetchData(true);
           that.dialogSizeVisible = false;
-          that.dialogOptionVisible = true;
-          getGoodsSize({ id: addSizeData.rid }).then(resp => {
-            if (resp.code == 0) {
-              that.goodSize = resp.data;
-            }
-          });
+          // that.dialogOptionVisible = true;
+          // this.dialogSearchVisible=false
+          // getGoodsSize({ id: addSizeData.rid }).then(resp => {
+          //   if (resp.code == 0) {
+          //     that.goodSize = resp.data;
+          //   }
+          // });
           that.resetAddSizeData(addSizeData.rid);
         }
       });
@@ -1047,14 +1014,19 @@ export default {
         size: 36,
         rid: id,
         price: 0.0,
-        mun: 1
+        num: 1,
+        shoeNum: "",
+        inPrice:""
       };
       this.saleData = {
         sizeid: 0,
         rid: 0,
+        inPrice:'',
+        shoeNum:'',
+        sizeid: 0,
         price: 0.0,
         size: 0,
-        mun: 1
+        num: 1,
       };
       let sizeList = this.sizeList;
       for (const i in sizeList) {
@@ -1068,61 +1040,71 @@ export default {
     },
     saleOption(data) {
       let saleData = this.saleData;
-      saleData.rid = data.rid;
-      saleData.sizeid = data.id;
+      saleData.inPrice = data.inPrice;
+      saleData.price = data.price;
+      saleData.shoeNum = data.shoeNum;
       saleData.size = data.size;
-      this.saleMaxnum = data.costmun;
+      this.saleMaxnum = data.resultNum;
       this.saleData = saleData;
       this.dialogSaleVisible = true;
       this.dialogOptionVisible = false;
     },
-    goodsOption(id) {
+    // 点击卖出
+    goodsOption(item) {
       const that = this;
-      let addSizeData = that.addSizeData;
-      let saleData = that.saleData;
-      addSizeData.rid = id;
-      saleData.rid = id;
-      this.Loading = true;
-      getGoodsInfo({ id: id }).then(res => {
-        if (res.code == 0) {
-          that.goodDetail = res.data[0];
-        }
+      that.dialogOptionVisible=true
+      this.goodDetail=item
+      getSoldList({ pageSize:1000,pageIndex:1,shoeNum:item.shoeNum}).then(res => {
+        that.goodSize = res.data.list;
       });
-      getGoodsSize({ id: id }).then(res => {
-        if (res.code == 0) {
-          that.goodSize = res.data;
-          this.Loading = false;
-          that.dialogOptionVisible = true;
-        }
-      });
-      this.addSizeData = addSizeData;
-      this.saleData = saleData;
+      // let addSizeData = that.addSizeData;
+      // let saleData = that.saleData;
+      // addSizeData.rid = id;
+      // saleData.rid = id;
+      // this.Loading = true;
+      // getGoodsInfo({ id: id }).then(res => {
+      //   if (res.code == 0) {
+      //     that.goodDetail = res.data[0];
+      //   }
+      // });
+      // getGoodsSize({ id: id }).then(res => {
+      //   if (res.code == 0) {
+      //     that.goodSize = res.data;
+      //     this.Loading = false;
+      //     that.dialogOptionVisible = true;
+      //   }
+      // });
+      // this.addSizeData = addSizeData;
+      // this.saleData = saleData;
     },
     addGoods() {
       this.dialogSearchVisible = false;
       this.dialogAddVisible = true;
     },
     hideDialog() {
-      this.goodDetail = {
-        image: "",
-        name: ""
-      };
+      this.goodDetail = {}
       this.dialogSizeVisible = false;
       this.dialogSaleVisible = false;
       this.dialogTableVisible = false;
-      this.dialogSearchVisible = false;
+      this.dialogSearchVisible = true;
       this.dialogAddVisible = false;
       this.dialogOptionVisible = false;
+      this.dialogSearchVisible=false
     },
     headerClass(row) {
       return "header_row";
     },
-    fetchData(p) {
+    fetchData(replace=false) {
       this.listLoading = true;
-      getList({...p}).then(response => {
+      getList({...this.p}).then(response => {
         // this.list = response.data.items;
         if (response.code === 0) {
-          this.list =[...this.list,...response.data.list] ;
+          if(replace){
+            this.list=response.data.list
+          }else {
+            this.list =[...this.list,...response.data.list] ;
+
+          }
           this.p.pageIndex=response.data.pageIndex
           this.p.totalPages=response.data.totalPages
         }

@@ -8,7 +8,7 @@
         <div class="card-panel-description">
           <div class="card-panel-text">商品</div>
           <div>
-            <count-to :start-val="0" :end-val="data.zong" :duration="2600" class="card-panel-number" />
+            <count-to :start-val="0" :end-val="panelGroup.shoeCount" :duration="2600" class="card-panel-number" />
             <span class="card-panel-unit"> 个</span>
           </div>
           <el-progress class="el-progress" :percentage="45" :stroke-width="4" :show-text="false" color="#326BEB"></el-progress>
@@ -23,7 +23,7 @@
         <div class="card-panel-description">
           <div class="card-panel-text">库存</div>
           <div>
-            <count-to :start-val="0" :end-val="data.mun" :duration="2600" class="card-panel-number" />
+            <count-to :start-val="0" :end-val="panelGroup.sizeCount" :duration="2600" class="card-panel-number" />
             <span class="card-panel-unit"> 个</span>
           </div>
           <el-progress class="el-progress" :percentage="45" :stroke-width="4" :show-text="false" color="#17B6A8"></el-progress>
@@ -39,7 +39,7 @@
           <div class="card-panel-text">库存成本</div>
           <div class="card-panel-number">
             <span> ¥</span>
-            <count-to :start-val="0" :end-val="data.money" :duration="2600" />
+            <count-to :start-val="0" :end-val="panelGroup.priceInCount" :duration="2600" />
           </div>
           <el-progress class="el-progress" :percentage="45" :stroke-width="4" :show-text="false" color="#E1303A"></el-progress>
         </div>
@@ -51,10 +51,10 @@
           <img src="@/assets/index/profit.png" alt />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">盈亏总额</div>
+          <div class="card-panel-text">市场总利润</div>
           <div class="card-panel-number">
-            <span>{{data.yknmsl >= 0?'+':'-'}}</span>
-            <count-to :start-val="0" :end-val="data.yknmsl | priceParse" :duration="2600" />
+            <span>{{panelGroup.profitCount >= 0?'+':'-'}}</span>
+            <count-to :start-val="0" :end-val="panelGroup.profitCount | priceParse" :duration="2600" />
             <!-- <span>w</span> -->
           </div>
           <el-progress class="el-progress" :percentage="45" :stroke-width="4" :show-text="false" color="#FF9600"></el-progress>
@@ -66,19 +66,27 @@
 
 <script>
   import CountTo from "vue-count-to";
-  import { jishu } from '@/api/user';
   export default {
     components: {
       CountTo
     },
+    props:{
+
+      panelGroup:{
+        type:Object,
+        default:()=>{
+          return {
+            shoeCount:0,
+            sizeCount:0,
+            priceInCount:0,
+            profitCount:0
+          }
+        }
+      },
+    },
     data() {
       return {
-        data: {
-          money:0,
-          mun:0,
-          zong:0,
-          yknmsl:0
-        }
+
       }
     },
     methods: {
@@ -89,14 +97,7 @@
         return percentage === 100 ? '满' : `${percentage}%`;
       }
     },
-    created () {
-      const that = this;
-      jishu().then(response => {
-        if (response.code == 0) {
-          that.data = response.data;
-        }
-			});
-    },
+
   };
 </script>
 
