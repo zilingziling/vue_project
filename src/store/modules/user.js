@@ -60,15 +60,15 @@ const actions = {
     })
   },
   // user logout
-  getdashTop({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      getdashTop.then((res) => {
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
+  // getdashTop({ commit, state }) {
+  //   return new Promise((resolve, reject) => {
+  //     getdashTop.then((res) => {
+  //       resolve()
+  //     }).catch(error => {
+  //       reject(error)
+  //     })
+  //   })
+  // },
 
   // remove token
   resetToken({ commit }) {
