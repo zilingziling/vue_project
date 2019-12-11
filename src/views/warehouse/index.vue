@@ -1,14 +1,14 @@
 <template>
-  <div class="app-container" v-loading.fullscreen.lock="Loading">
+  <div v-loading.fullscreen.lock="Loading" class="app-container">
     <div class="flex jus-bet">
       <div class="dashboard-text">仓库</div>
       <div class="flex">
         <el-button class="top_button" @click="getLog">
           查看添加日志
-          <img src="@/assets/warehouse/eyes.png" alt="" />
+          <img src="@/assets/warehouse/eyes.png" alt="">
         </el-button>
         <el-button class="top_button" @click="dialogSearchVisible = true">
-          <img src="@/assets/warehouse/add.png" alt="" /> 新增商品
+          <img src="@/assets/warehouse/add.png" alt=""> 新增商品
         </el-button>
       </div>
     </div>
@@ -37,7 +37,7 @@
         <template slot-scope="list">
           <div class="flex goods_wrap">
             <div class="goods_img">
-              <img :src="list.row.img" alt="" v-if="list.row.image != ''" />
+              <img v-if="list.row.image != ''" :src="list.row.img" alt="">
             </div>
             <div class="goods_name">{{ list.row.shoeName }}</div>
           </div>
@@ -80,12 +80,11 @@
                 ? 'fc_red'
                 : 'fc_green'
             "
-            >{{
-              list.row.priceProfit > 0 || list.row.priceProfit == 0
-                ? "+"
-                : "-"
-            }}￥</span
-          >
+          >{{
+            list.row.priceProfit > 0 || list.row.priceProfit == 0
+              ? "+"
+              : "-"
+          }}￥</span>
           <span
             class="numberCell"
             :class="
@@ -93,39 +92,38 @@
                 ? 'fc_red'
                 : 'fc_green'
             "
-            >{{ list.row.priceProfit | toDecimal }}</span
-          >
+          >{{ list.row.priceProfit | toDecimal }}</span>
         </template>
       </el-table-column>
-<!--      <el-table-column-->
-<!--        class-name="status-col"-->
-<!--        label="当前盈亏"-->
-<!--        min-width="140"-->
-<!--        align="center"-->
-<!--      >-->
-<!--        <template slot-scope="list">-->
-<!--          <span-->
-<!--            class="profit_red"-->
-<!--            :class="-->
-<!--              list.row.cnmslba > 0 || list.row.cnmslba == 0-->
-<!--                ? 'fc_red'-->
-<!--                : 'fc_green'-->
-<!--            "-->
-<!--            >{{-->
-<!--              list.row.cnmslba > 0 || list.row.cnmslba == 0 ? "+" : "-"-->
-<!--            }}￥</span-->
-<!--          >-->
-<!--          <span-->
-<!--            class="profit_red_number"-->
-<!--            :class="-->
-<!--              list.row.cnmslba > 0 || list.row.cnmslba == 0-->
-<!--                ? 'fc_red'-->
-<!--                : 'fc_green'-->
-<!--            "-->
-<!--            >{{ list.row.cnmslba | toDecimal }}</span-->
-<!--          >-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <!--      <el-table-column-->
+      <!--        class-name="status-col"-->
+      <!--        label="当前盈亏"-->
+      <!--        min-width="140"-->
+      <!--        align="center"-->
+      <!--      >-->
+      <!--        <template slot-scope="list">-->
+      <!--          <span-->
+      <!--            class="profit_red"-->
+      <!--            :class="-->
+      <!--              list.row.cnmslba > 0 || list.row.cnmslba == 0-->
+      <!--                ? 'fc_red'-->
+      <!--                : 'fc_green'-->
+      <!--            "-->
+      <!--            >{{-->
+      <!--              list.row.cnmslba > 0 || list.row.cnmslba == 0 ? "+" : "-"-->
+      <!--            }}￥</span-->
+      <!--          >-->
+      <!--          <span-->
+      <!--            class="profit_red_number"-->
+      <!--            :class="-->
+      <!--              list.row.cnmslba > 0 || list.row.cnmslba == 0-->
+      <!--                ? 'fc_red'-->
+      <!--                : 'fc_green'-->
+      <!--            "-->
+      <!--            >{{ list.row.cnmslba | toDecimal }}</span-->
+      <!--          >-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
       <el-table-column
         align="center"
         prop="created_at"
@@ -134,8 +132,7 @@
       >
         <template slot-scope="list">
           <el-button type="primary" @click="goodsOption(list.row)">
-            入库/卖出</el-button
-          >
+            入库/卖出</el-button>
           <div class="delectBtn" @click="delectBtn(list.row.id)">删除</div>
         </template>
       </el-table-column>
@@ -161,7 +158,7 @@
         class="close"
         src="@/assets/warehouse/close.png"
         @click="dialogTableVisible = false"
-      />
+      >
       <el-table
         :data="logData"
         style="border-radius:4px;"
@@ -243,36 +240,35 @@
       :visible.sync="dialogSearchVisible"
     >
       <div class="flex search_wrap">
-        <img src="@/assets/warehouse/search.png" />
+        <img src="@/assets/warehouse/search.png">
         <el-input
+          v-model="search_key"
           class="search_input"
           placeholder="请输入货号，例如384665-060"
-          @change="search"
-          v-model="search_key"
           clearable
-        ></el-input>
+          @change="search"
+        />
       </div>
       <!-- 搜索没有数据 -->
-      <div class="search_wrap_noData" v-if="searchData.length === 0">
-        <img src="@/assets/warehouse/shop.png" />
+      <div v-if="searchData.length === 0" class="search_wrap_noData">
+        <img src="@/assets/warehouse/shop.png">
         <div class="search_tip">
           搜索的商品未搜索到，点击<span
             class="search_tip_else"
             @click="addGoods"
-            >自定义添加</span
-          >
+          >自定义添加</span>
         </div>
       </div>
       <!-- 搜索有数据 -->
-      <div class="search_wrap_Data" v-else>
+      <div v-else class="search_wrap_Data">
         <div
-          class="flex search_data_item"
           v-for="(item, index) in searchData"
           :key="index"
+          class="flex search_data_item"
           @click="idStorage(item)"
         >
           <div class="search_data_img">
-            <img :src="item.img" v-if="item.img" />
+            <img v-if="item.img" :src="item.img">
           </div>
           <div>
             <div class="search_data_name">{{ item.shoeName }}</div>
@@ -294,7 +290,7 @@
           class="close"
           src="@/assets/warehouse/close.png"
           @click="hideDialog"
-        />
+        >
         <div>
           <el-upload
             class="goods-uploader"
@@ -304,28 +300,28 @@
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
           >
-            <img v-if="storageData.img" :src="storageData.img" class="avatar" />
+            <img v-if="storageData.img" :src="storageData.img" class="avatar">
             <img
               v-else
               src="@/assets/warehouse/picture.png"
               class="avatar"
               style="width:119px"
-            />
+            >
           </el-upload>
           <div class="add_title">品名</div>
           <el-input
+            v-model="storageData.name"
             class="addGoods_msg_input"
             placeholder="请输入商品名称"
-            v-model="storageData.name"
             clearable
-          ></el-input>
+          />
           <div class="add_title">货号</div>
           <el-input
+            v-model="storageData.huo"
             class="addGoods_msg_input"
             placeholder="货号，如jk133455"
-            v-model="storageData.huo"
             clearable
-          ></el-input>
+          />
           <el-button class="addGoods_btton" @click="storage">添加</el-button>
         </div>
       </div>
@@ -342,10 +338,10 @@
           class="close"
           src="@/assets/warehouse/close.png"
           @click="hideDialog"
-        />
+        >
         <div class="options_goods_detail">
           <div class="options_img">
-            <img :src="goodDetail.img" />
+            <img :src="goodDetail.img">
           </div>
           <div class="options_detail">
             <div class="options_name line3">{{ goodDetail.shoeName }}</div>
@@ -357,47 +353,47 @@
         <div class="size_minititle">尺寸</div>
         <div class="size_wrap">
           <div
-            class="size_item"
-            :class="item.isSelect ? 'size_item_select' : ''"
             v-for="(item, index) in sizeList"
             :key="index"
+            class="size_item"
+            :class="item.isSelect ? 'size_item_select' : ''"
             @click="sizeSelect(index)"
           >
             {{ item.value }}
           </div>
           <el-input
-            class="sizeInput"
-            :class="item.isSelect ? 'sizeInput_select' : ''"
             v-for="(item, indexs) in sizeSelfData"
             :key="'a' + indexs"
-            @focus="sizeInputFocus(indexs)"
             v-model="item.value"
-          ></el-input>
+            class="sizeInput"
+            :class="item.isSelect ? 'sizeInput_select' : ''"
+            @focus="sizeInputFocus(indexs)"
+          />
           <div class="size_item" @click="sizeSelf">自定义</div>
         </div>
         <div class="size_minititle">入货价格（¥）</div>
         <el-input
+          v-model="addSizeData.price"
           class="sale_peice_input"
           placeholder="请输入价格"
           @input="check_price"
-          v-model="addSizeData.price"
-        ></el-input>
+        />
         <div class="size_minititle">数量</div>
         <div class="add_number_wrap">
           <img
             src="@/assets/warehouse/minus_number.png"
             alt=""
             @click="intMinus"
-          />
+          >
           <div class="addsize_number">
             <el-input
+              v-model.number="addSizeData.num"
               class="sale_num_input"
               :min="0"
               @blur="intNumBlur($event)"
-              v-model.number="addSizeData.num"
-            ></el-input>
+            />
           </div>
-          <img src="@/assets/warehouse/add_number.png" alt="" @click="intAdd" />
+          <img src="@/assets/warehouse/add_number.png" alt="" @click="intAdd">
         </div>
         <el-button class="addSize_button" @click="addSize">添加</el-button>
       </div>
@@ -414,10 +410,10 @@
           class="close"
           src="@/assets/warehouse/close.png"
           @click="hideDialog"
-        />
+        >
         <div class="options_goods_detail">
           <div class="options_img">
-            <img :src="goodDetail.img" />
+            <img :src="goodDetail.img">
           </div>
           <div class="options_detail">
             <div class="options_name line3">{{ goodDetail.shoeName }}</div>
@@ -428,32 +424,32 @@
         </div>
         <div class="size_minititle">卖出单价（¥）</div>
         <el-input
+          v-model="saleData.price"
           class="sale_peice_input"
           placeholder="请输入价格"
           @input="saleCheck_price"
-          v-model="saleData.price"
-        ></el-input>
+        />
         <div class="size_minititle">数量</div>
         <div class="add_number_wrap">
           <img
             src="@/assets/warehouse/minus_number.png"
             alt=""
             @click="saleMinus"
-          />
+          >
           <div class="addsize_number">
             <el-input
+              v-model.number="saleData.num"
               class="sale_num_input"
               :min="0"
               :max="saleMaxnum"
               @blur="saleNumBlur($event)"
-              v-model.number="saleData.num"
-            ></el-input>
+            />
           </div>
           <img
             src="@/assets/warehouse/add_number.png"
             alt=""
             @click="saleAdd"
-          />
+          >
         </div>
         <el-button class="addSize_button" @click="sale">卖出</el-button>
       </div>
@@ -471,18 +467,18 @@
           class="close"
           src="@/assets/warehouse/close.png"
           @click="hideDialog"
-        />
+        >
         <div class="options_goods_detail">
           <div class="options_img">
-            <img :src="goodDetail.img" v-if="goodDetail.img" />
+            <img v-if="goodDetail.img" :src="goodDetail.img">
           </div>
           <div class="options_detail">
-            <div class="options_name line3">{{ goodDetail.shoeName}} {{goodDetail.corlor}}</div>
+            <div class="options_name line3">{{ goodDetail.shoeName }} {{ goodDetail.corlor }}</div>
             <div class="flex jus-bet al-cen" style="margin-top:10px">
               <div class="options_model">{{ goodDetail.shoeNum }}</div>
               <div class="addsize_button" @click="addSizeButton">
                 添加尺寸
-                <img src="@/assets/warehouse/add.png" />
+                <img src="@/assets/warehouse/add.png">
               </div>
             </div>
           </div>
@@ -555,16 +551,14 @@
                 :class="
                   goodSize.row.priceProfit >= 0 ? 'fc_red' : 'fc_green'
                 "
-                >{{ goodSize.row.priceProfit >= 0 ? "+" : "-" }}￥</span
-              >
+              >{{ goodSize.row.priceProfit >= 0 ? "+" : "-" }}￥</span>
               <span
                 class="numberCell"
                 style="font-size:18px"
                 :class="
                   goodSize.row.priceProfit >= 0 ? 'fc_red' : 'fc_green'
                 "
-                >{{ goodSize.row.priceProfit | toDecimal }}</span
-              >
+              >{{ goodSize.row.priceProfit | toDecimal }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -579,8 +573,7 @@
                 class="sale_button"
                 @click="saleOption(goodSize.row)"
               >
-                卖出</el-button
-              >
+                卖出</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -603,8 +596,8 @@ import {
   getLog,
   getSize,
   getSoldList
-} from "@/api/table";
-import BackToTop from "@/components/BackToTop";
+} from '@/api/table'
+import BackToTop from '@/components/BackToTop'
 import { getScrollHeight, getScrollTop, getWindowHeight } from '../../utils/methods'
 export default {
   components: {
@@ -613,11 +606,11 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: "success",
-        draft: "gray",
-        deleted: "danger"
-      };
-      return statusMap[status];
+        published: 'success',
+        draft: 'gray',
+        deleted: 'danger'
+      }
+      return statusMap[status]
     }
   },
   data() {
@@ -625,8 +618,8 @@ export default {
       Loading: false,
       logData: [],
       searchData: [],
-      search_key: "",
-      inpue: "",
+      search_key: '',
+      inpue: '',
       list: [],
       listLoading: true,
       dialogTableVisible: false,
@@ -636,40 +629,40 @@ export default {
       dialogSizeVisible: false,
       dialogSaleVisible: false,
       myBackToTopStyle: {
-        right: "0",
-        bottom: "25px",
-        width: "116px",
-        height: "120px",
-        "border-radius": "4px",
-        "line-height": "45px", // 请保持与高度一致以垂直居中 Please keep consistent with height to center vertically
-        background: "transparent" // 按钮的背景颜色 The background color of the button
+        right: '0',
+        bottom: '25px',
+        width: '116px',
+        height: '120px',
+        'border-radius': '4px',
+        'line-height': '45px', // 请保持与高度一致以垂直居中 Please keep consistent with height to center vertically
+        background: 'transparent' // 按钮的背景颜色 The background color of the button
       },
       // 页码
-      p:{
-        pageIndex:1,
-        pageSize:10,
-        shoeName:"",
-        totalPages:"",
+      p: {
+        pageIndex: 1,
+        pageSize: 10,
+        shoeName: '',
+        totalPages: ''
 
       },
 
       sizeList: [
         {
-          value: "36",
+          value: '36',
           isSelect: true
-        },
+        }
       ],
       sizeSelfData: [],
       goodDetail: {},
       goodSize: [],
-      sizeType: 0, //0表示选择的  1表示自定义的尺码
+      sizeType: 0, // 0表示选择的  1表示自定义的尺码
       addSizeData: {
         size: 36,
         rid: 0,
         price: null,
         num: 1,
-        inPrice:"",
-        shoeNum:""
+        inPrice: '',
+        shoeNum: ''
       },
       saleData: {
         sizeid: 0,
@@ -677,153 +670,146 @@ export default {
         price: null,
         size: 0,
         num: 1,
-        inPrice:'',
-        shoeNum:''
+        inPrice: '',
+        shoeNum: ''
       },
       saleMaxnum: 0,
       storageData: {
-        img: "",
-        name: "",
-        huo: ""
+        img: '',
+        name: '',
+        huo: ''
       }
-    };
-  },
-  created() {
-    this.fetchData();
-  },
-  mounted(){
-    window.addEventListener('scroll', this.handleScroll, true);
-  },
-  destroyed: function () {
-    window.removeEventListener('scroll', this.handleScroll);   //  离开页面清除（移除）滚轮滚动事件
+    }
   },
   watch: {},
+  created() {
+    this.fetchData()
+  },
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll, true)
+  },
+  destroyed: function() {
+    window.removeEventListener('scroll', this.handleScroll) //  离开页面清除（移除）滚轮滚动事件
+  },
   methods: {
     // 尺码
     getSizeList(shoeNum) {
       getSize({ pageIndex: 1, pageSize: 1000, shoeNum }).then(r => {
         if (r.code === 0) {
-          let list = r.data.list
+          const list = r.data.list
           console.log(list)
         }
-
       })
     },
     // 滚动事件
-    handleScroll(){
-      console.log(1)
-      let isBottom=getScrollHeight()-(Math.round(getScrollTop())+getWindowHeight())
-      if(isBottom===0&&this.p.pageIndex!==this.p.totalPages){
-        console.log("到底不了")
+    handleScroll() {
+      const isBottom = getScrollHeight() - (Math.round(getScrollTop()) + getWindowHeight())
+      if (isBottom === 0 && this.p.pageIndex !== this.p.totalPages) {
         this.p.pageIndex++
-        console.log(this.p.pageIndex)
-        this.fetchData({
-          pageSize:this.p.pageSize,
-          pageIndex:this.p.pageIndex,
-        })
+        this.fetchData()
         window.scrollBy(0, -1400)
       }
     },
     sizeInputFocus(index) {
-      let sizeList = this.sizeList;
+      const sizeList = this.sizeList
       for (const i of sizeList) {
-        i.isSelect = false;
+        i.isSelect = false
       }
-      let sizeSelfData = this.sizeSelfData;
+      const sizeSelfData = this.sizeSelfData
       for (const i of sizeSelfData) {
-        i.isSelect = false;
+        i.isSelect = false
       }
-      sizeSelfData[index].isSelect = true;
-      this.sizeType = 1;
-      this.sizeSelfData = sizeSelfData;
-      this.sizeList = sizeList;
+      sizeSelfData[index].isSelect = true
+      this.sizeType = 1
+      this.sizeSelfData = sizeSelfData
+      this.sizeList = sizeList
     },
     sizeSelf() {
-      let sizeList = this.sizeList;
+      const sizeList = this.sizeList
       for (const i of sizeList) {
-        i.isSelect = false;
+        i.isSelect = false
       }
-      let sizeSelfData = this.sizeSelfData;
-      if (sizeSelfData != "") {
+      const sizeSelfData = this.sizeSelfData
+      if (sizeSelfData != '') {
         for (const i of sizeSelfData) {
-          i.isSelect = false;
+          i.isSelect = false
         }
       }
-      sizeSelfData.push({ value: "", isSelect: true });
-      this.sizeType = 1;
-      this.sizeList = sizeList;
-      this.sizeSelfData = sizeSelfData;
+      sizeSelfData.push({ value: '', isSelect: true })
+      this.sizeType = 1
+      this.sizeList = sizeList
+      this.sizeSelfData = sizeSelfData
     },
     // 获取日志
     getLog() {
-      const that = this;
-      getLog({pageSize: 10,pageIndex: 10,type:"入库"}).then(res => {
-        if (res.code ===0) {
-          that.logData = res.data.list;
+      const that = this
+      getLog({ pageSize: 10, pageIndex: 10, type: '入库' }).then(res => {
+        if (res.code === 0) {
+          that.logData = res.data.list
         }
-      });
-      that.dialogTableVisible = true;
+      })
+      that.dialogTableVisible = true
     },
     // 自定义入库
     storage() {
-      const that = this;
-      let storageData = this.storageData;
+      const that = this
+      const storageData = this.storageData
       storage(storageData).then(res => {
         if (res.code === 0) {
           that.$message({
-            type: "success",
-            message: "操作成功!"
-          });
-          that.hideDialog();
-          that.fetchData();
+            type: 'success',
+            message: '操作成功!'
+          })
+          that.hideDialog()
+          that.fetchData()
           that.that.storageData = {
-            img: "",
-            name: "",
-            huo: ""
-          };
+            img: '',
+            name: '',
+            huo: ''
+          }
         }
-      });
+      })
     },
     // 照片上传成功
     handleAvatarSuccess(res) {
       if (res.code == 0) {
         this.$message({
-          type: "success",
-          message: "上传成功!"
-        });
-        this.storageData.img = `https://www.styleking.cn/${res.data.path}`;
+          type: 'success',
+          message: '上传成功!'
+        })
+        this.storageData.img = `https://www.styleking.cn/${res.data.path}`
       }
     },
     beforeAvatarUpload(file) {
       const isJPG =
-        file.type === "image/jpg" ||
-        file.type === "image/jpeg" ||
-        file.type === "image/gif" ||
-        file.type === "image/png";
-      const isLt2M = file.size / 1024 / 1024 < 2;
+        file.type === 'image/jpg' ||
+        file.type === 'image/jpeg' ||
+        file.type === 'image/gif' ||
+        file.type === 'image/png'
+      const isLt2M = file.size / 1024 / 1024 < 2
       if (!isJPG) {
-        this.$message.error("上传图片格式仅支持jpg|jpeg|png|gif");
+        this.$message.error('上传图片格式仅支持jpg|jpeg|png|gif')
       }
       if (!isLt2M) {
-        this.$message.error("上传图片大小不能超过 2MB!");
+        this.$message.error('上传图片大小不能超过 2MB!')
       }
-      return isJPG && isLt2M;
+      return isJPG && isLt2M
     },
     // 根据id入库
     idStorage(item) {
-      const that = this;
-      this.dialogSearchVisible=false
-      this.dialogSizeVisible=true
-      this.goodDetail=item
-      let size=item.size.split(",")
-      let list=[]
-        size.map(i=>list.push(
-          {
-            value:i,
-            isSelect:false
-          }
-        ))
-      this.sizeList=list
+      const that = this
+      this.dialogSearchVisible = false
+      this.dialogSizeVisible = true
+      this.goodDetail = item
+      const size = item.size.split(',')
+      const list = []
+      size.map(i => list.push(
+        {
+          value: i,
+          isSelect: false
+        }
+      ))
+      this.sizeList = list
       // this.getSizeList(item.shoeNum)
       // idStorage({ id: id }).then(res => {
       //   if (res.code == 0 && res.msg == "ok" && res.data == 1) {
@@ -840,164 +826,164 @@ export default {
     },
     // 搜索
     search(key) {
-      const that = this;
-      if (key === "") {
-        that.searchData = [];
-        return false;
+      const that = this
+      if (key === '') {
+        that.searchData = []
+        return false
       }
-      search({ pageSize:1000,pageIndex:1,shoeName:key }).then(res => {
-        that.searchData = res.data.list;
-      });
+      search({ pageSize: 1000, pageIndex: 1, shoeName: key }).then(res => {
+        that.searchData = res.data.list
+      })
     },
     // 卖鞋
     sale() {
-      const that = this;
-      let saleData = this.saleData;
+      const that = this
+      const saleData = this.saleData
       sale(saleData).then(res => {
-        if (res.code === 0 ) {
-          that.fetchData(true);
-          that.hideDialog();
-          that.resetAddSizeData();
+        if (res.code === 0) {
+          that.fetchData(true)
+          that.hideDialog()
+          that.resetAddSizeData()
           that.$message({
-            type: "success",
-            message: "操作成功!"
-          });
+            type: 'success',
+            message: '操作成功!'
+          })
         }
-      });
+      })
     },
     delectBtn(id) {
-      this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
-          this.delectItem(id);
+          this.delectItem(id)
         })
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
-        });
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     },
     delectItem(id) {
-      const that = this;
+      const that = this
       delectItem({ id: id }).then(res => {
         if (res.code === 0) {
-          that.fetchData(true);
+          that.fetchData(true)
           that.$message({
-            type: "success",
-            message: "删除成功!"
-          });
+            type: 'success',
+            message: '删除成功!'
+          })
         }
-      });
+      })
     },
     check_price(e) {
-      let value = e.match(/^\d*(\.?\d{0,2})/g)[0] || null;
-      this.addSizeData.price = value;
+      const value = e.match(/^\d*(\.?\d{0,2})/g)[0] || null
+      this.addSizeData.price = value
     },
     intNumBlur(e) {
-      let addSizeData = this.addSizeData;
+      const addSizeData = this.addSizeData
       if (e.target.value <= 0) {
-        addSizeData.num = 1;
+        addSizeData.num = 1
       }
-      this.addSizeData = addSizeData;
+      this.addSizeData = addSizeData
     },
     intMinus() {
-      let addSizeData = this.addSizeData;
+      const addSizeData = this.addSizeData
       if (addSizeData.num == 1) {
-        return;
+        return
       } else {
-        addSizeData.num--;
+        addSizeData.num--
       }
-      this.addSizeData = addSizeData;
+      this.addSizeData = addSizeData
     },
     intAdd() {
-      let addSizeData = this.addSizeData;
-      addSizeData.num++;
-      this.addSizeData = addSizeData;
+      const addSizeData = this.addSizeData
+      addSizeData.num++
+      this.addSizeData = addSizeData
     },
     saleCheck_price(e) {
-      let value = e.match(/^\d*(\.?\d{0,2})/g)[0] || null;
-      this.saleData.price = value;
+      const value = e.match(/^\d*(\.?\d{0,2})/g)[0] || null
+      this.saleData.price = value
     },
     saleNumBlur(e) {
-      console.log(e.target.value);
-      console.log(this.saleMaxnum);
-      let saleData = this.saleData;
+      console.log(e.target.value)
+      console.log(this.saleMaxnum)
+      const saleData = this.saleData
       if (e.target.value <= 0) {
-        saleData.num = 1;
+        saleData.num = 1
       }
       if (e.target.value > this.saleMaxnum) {
         this.$message({
-          type: "info",
-          message: "卖出数量不能超过库存数量"
-        });
-        saleData.num = this.saleMaxnum;
+          type: 'info',
+          message: '卖出数量不能超过库存数量'
+        })
+        saleData.num = this.saleMaxnum
       }
-      this.saleData = saleData;
+      this.saleData = saleData
     },
     saleMinus() {
-      let saleData = this.saleData;
+      const saleData = this.saleData
       if (saleData.num == 1) {
-        return;
+        return
       } else {
-        saleData.num--;
+        saleData.num--
       }
-      this.saleData = saleData;
+      this.saleData = saleData
     },
     saleAdd() {
-      let saleData = this.saleData;
+      const saleData = this.saleData
       if (saleData.num == this.saleMaxnum) {
         this.$message({
-          type: "info",
-          message: "卖出数量不能超过库存数量"
-        });
-        return false;
+          type: 'info',
+          message: '卖出数量不能超过库存数量'
+        })
+        return false
       }
-      saleData.num++;
-      this.saleData = saleData;
+      saleData.num++
+      this.saleData = saleData
     },
     sizeSelect(index) {
-      let sizeSelfData = this.sizeSelfData;
-      let addSizeData = this.addSizeData;
-      let sizeList = this.sizeList;
+      const sizeSelfData = this.sizeSelfData
+      const addSizeData = this.addSizeData
+      const sizeList = this.sizeList
       for (const i in sizeList) {
-        sizeList[i].isSelect = false;
+        sizeList[i].isSelect = false
       }
       for (const i in sizeSelfData) {
-        sizeSelfData[i].isSelect = false;
+        sizeSelfData[i].isSelect = false
       }
-      sizeList[index].isSelect = true;
-      addSizeData.size = sizeList[index].value;
-      this.sizeType = 0;
-      this.sizeList = sizeList;
-      this.sizeSelfData = sizeSelfData;
+      sizeList[index].isSelect = true
+      addSizeData.size = sizeList[index].value
+      this.sizeType = 0
+      this.sizeList = sizeList
+      this.sizeSelfData = sizeSelfData
     },
     // 入库
     addSize() {
-      const that = this;
-      let addSizeData = this.addSizeData;
-      let sizeSelfData = this.sizeSelfData;
+      const that = this
+      const addSizeData = this.addSizeData
+      const sizeSelfData = this.sizeSelfData
       if (this.sizeType == 1) {
         for (let i = 0; i < sizeSelfData.length; i++) {
           if (sizeSelfData[i].isSelect) {
-            addSizeData.size = sizeSelfData[i].value;
+            addSizeData.size = sizeSelfData[i].value
           }
         }
       }
-      addSizeData.inPrice=this.goodDetail.inPrice
-      addSizeData.shoeNum=this.goodDetail.shoeNum
+      addSizeData.inPrice = this.goodDetail.inPrice
+      addSizeData.shoeNum = this.goodDetail.shoeNum
       addSize(addSizeData).then(res => {
         if (res.code === 0) {
           that.$message({
-            message: "添加成功",
-            type: "success",
-            customClass: "zZindex"
-          });
-          that.fetchData(true);
-          that.dialogSizeVisible = false;
+            message: '添加成功',
+            type: 'success',
+            customClass: 'zZindex'
+          })
+          that.fetchData(true)
+          that.dialogSizeVisible = false
           // that.dialogOptionVisible = true;
           // this.dialogSearchVisible=false
           // getGoodsSize({ id: addSizeData.rid }).then(resp => {
@@ -1005,9 +991,9 @@ export default {
           //     that.goodSize = resp.data;
           //   }
           // });
-          that.resetAddSizeData(addSizeData.rid);
+          that.resetAddSizeData(addSizeData.rid)
         }
-      });
+      })
     },
     resetAddSizeData(id) {
       this.addSizeData = {
@@ -1015,48 +1001,48 @@ export default {
         rid: id,
         price: 0.0,
         num: 1,
-        shoeNum: "",
-        inPrice:""
-      };
+        shoeNum: '',
+        inPrice: ''
+      }
       this.saleData = {
         sizeid: 0,
         rid: 0,
-        inPrice:'',
-        shoeNum:'',
+        inPrice: '',
+        shoeNum: '',
         sizeid: 0,
         price: 0.0,
         size: 0,
-        num: 1,
-      };
-      let sizeList = this.sizeList;
-      for (const i in sizeList) {
-        sizeList[i].isSelect = false;
+        num: 1
       }
-      sizeList[0].isSelect = true;
+      const sizeList = this.sizeList
+      for (const i in sizeList) {
+        sizeList[i].isSelect = false
+      }
+      sizeList[0].isSelect = true
     },
     addSizeButton() {
-      this.dialogSizeVisible = true;
-      this.dialogOptionVisible = false;
+      this.dialogSizeVisible = true
+      this.dialogOptionVisible = false
     },
     saleOption(data) {
-      let saleData = this.saleData;
-      saleData.inPrice = data.inPrice;
-      saleData.price = data.price;
-      saleData.shoeNum = data.shoeNum;
-      saleData.size = data.size;
-      this.saleMaxnum = data.resultNum;
-      this.saleData = saleData;
-      this.dialogSaleVisible = true;
-      this.dialogOptionVisible = false;
+      const saleData = this.saleData
+      saleData.inPrice = data.inPrice
+      saleData.price = data.price
+      saleData.shoeNum = data.shoeNum
+      saleData.size = data.size
+      this.saleMaxnum = data.resultNum
+      this.saleData = saleData
+      this.dialogSaleVisible = true
+      this.dialogOptionVisible = false
     },
     // 点击卖出
     goodsOption(item) {
-      const that = this;
-      that.dialogOptionVisible=true
-      this.goodDetail=item
-      getSoldList({ pageSize:1000,pageIndex:1,shoeNum:item.shoeNum}).then(res => {
-        that.goodSize = res.data.list;
-      });
+      const that = this
+      that.dialogOptionVisible = true
+      this.goodDetail = item
+      getSoldList({ pageSize: 1000, pageIndex: 1, shoeNum: item.shoeNum }).then(res => {
+        that.goodSize = res.data.list
+      })
       // let addSizeData = that.addSizeData;
       // let saleData = that.saleData;
       // addSizeData.rid = id;
@@ -1078,41 +1064,41 @@ export default {
       // this.saleData = saleData;
     },
     addGoods() {
-      this.dialogSearchVisible = false;
-      this.dialogAddVisible = true;
+      this.dialogSearchVisible = false
+      this.dialogAddVisible = true
     },
     hideDialog() {
       this.goodDetail = {}
-      this.dialogSizeVisible = false;
-      this.dialogSaleVisible = false;
-      this.dialogTableVisible = false;
-      this.dialogSearchVisible = true;
-      this.dialogAddVisible = false;
-      this.dialogOptionVisible = false;
-      this.dialogSearchVisible=false
+      this.dialogSizeVisible = false
+      this.dialogSaleVisible = false
+      this.dialogTableVisible = false
+      this.dialogSearchVisible = true
+      this.dialogAddVisible = false
+      this.dialogOptionVisible = false
+      this.dialogSearchVisible = false
     },
     headerClass(row) {
-      return "header_row";
+      return 'header_row'
     },
-    fetchData(replace=false) {
-      this.listLoading = true;
-      getList({...this.p}).then(response => {
+    fetchData(replace = false) {
+      this.listLoading = true
+      getList({ ...this.p }).then(response => {
         // this.list = response.data.items;
         if (response.code === 0) {
-          if(replace){
-            this.list=response.data.list
-          }else {
-            this.list =[...this.list,...response.data.list] ;
-
+          if (replace) {
+            this.list = response.data.list
+          } else {
+            // this.list = [...this.list, ...response.data.list]
+            this.list = this.list.concat(response.data.list)
           }
-          this.p.pageIndex=response.data.pageIndex
-          this.p.totalPages=response.data.totalPages
+          this.p.pageIndex = response.data.pageIndex
+          this.p.totalPages = response.data.totalPages
         }
-        this.listLoading = false;
-      });
+        this.listLoading = false
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss">
