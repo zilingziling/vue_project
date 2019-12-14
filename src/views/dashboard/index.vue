@@ -35,7 +35,7 @@
               <img src="@/assets/index/data.png" alt="">
               <div>
                 <div class="minititle">本月利润</div>
-                <div class="profit" :class="allData.monthProfitCount >= 0 ?'fc_red' :'fc_green'">{{ allData.monthProfitCount >= 0 ?'+' :'-' }}¥{{ allData.monthProfitCount | toDecimal }}</div>
+                <div class="profit" :class="allData.monthProfitCount >= 0 ?'fc_red' :'fc_green'">{{ allData.monthProfitCount >= 0 ?'+' :'-' }}¥{{ allData.monthProfitCount/100 | toDecimal }}</div>
               </div>
             </div>
           </div>

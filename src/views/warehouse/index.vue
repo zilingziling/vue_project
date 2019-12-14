@@ -62,13 +62,13 @@
       <el-table-column label="库存成本" min-width="140" align="center">
         <template slot-scope="list">
           <span class="moneyCell">￥</span>
-          <span class="numberCell">{{ list.row.priceIn | toDecimal }}</span>
+          <span class="numberCell">{{ list.row.priceIn/100 | toDecimal }}</span>
         </template>
       </el-table-column>
       <el-table-column label="毒到手总价" min-width="140" align="center">
         <template slot-scope="list">
           <span class="moneyCell">￥</span>
-          <span class="numberCell">{{ list.row.priceDo | toDecimal }}</span>
+          <span class="numberCell">{{ list.row.priceDo/100 | toDecimal }}</span>
         </template>
       </el-table-column>
       <el-table-column label="毒到手总利润" min-width="160" align="center">
@@ -92,7 +92,7 @@
                 ? 'fc_red'
                 : 'fc_green'
             "
-          >{{ list.row.priceProfit | toDecimal }}</span>
+          >{{ list.row.priceProfit/100 | toDecimal }}</span>
         </template>
       </el-table-column>
       <!--      <el-table-column-->
@@ -181,7 +181,7 @@
           align="center"
         >
           <template slot-scope="logData">
-            <span class="logs_table_text">{{ logData.row.type }}</span>
+            <span class="logs_table_text">{{ logData.row.operateType }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -206,7 +206,7 @@
           align="center"
         >
           <template slot-scope="logData">
-            <span class="logs_table_text">{{ logData.row.costmun }}</span>
+            <span class="logs_table_text">{{ logData.row.num }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -216,7 +216,7 @@
           align="center"
         >
           <template slot-scope="logData">
-            <span class="logs_table_text">￥{{ logData.row.allprice }}</span>
+            <span class="logs_table_text">￥{{ logData.row.price/100 }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -226,7 +226,7 @@
           align="center"
         >
           <template slot-scope="logData">
-            <span class="logs_table_text">{{ logData.row.add_time }}</span>
+            <span class="logs_table_text">{{ logData.row.createTime }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -524,18 +524,18 @@
             :cell-style="{ background: 'red' }"
           >
             <template slot-scope="goodSize">
-              <span>{{ goodSize.row.inPrice }}</span>
+              <span>{{ goodSize.row.inPrice/100 }}</span>
             </template>
           </el-table-column>
           <el-table-column label="入库总价" min-width="134" align="center">
             <template slot-scope="goodSize">
-              <span>{{ goodSize.row.priceIn }}</span>
+              <span>{{ goodSize.row.priceIn/100 }}</span>
             </template>
           </el-table-column>
           <el-table-column label="毒到手价" min-width="130" align="center">
             <template slot-scope="goodSize">
               <span class="moneyCell">￥</span>
-              <span class="numberCell">{{ goodSize.row.priceDo }}</span>
+              <span class="numberCell">{{ goodSize.row.priceDo/100 }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -558,7 +558,7 @@
                 :class="
                   goodSize.row.priceProfit >= 0 ? 'fc_red' : 'fc_green'
                 "
-              >{{ goodSize.row.priceProfit | toDecimal }}</span>
+              >{{ goodSize.row.priceProfit/100 | toDecimal }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -743,7 +743,7 @@ export default {
     // 获取日志
     getLog() {
       const that = this
-      getLog({ pageSize: 10, pageIndex: 10, type: '入库' }).then(res => {
+      getLog({ pageSize: 10000, pageIndex: 1, type: '入库' }).then(res => {
         if (res.code === 0) {
           that.logData = res.data.list
         }
