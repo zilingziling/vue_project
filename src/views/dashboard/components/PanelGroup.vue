@@ -8,7 +8,7 @@
         <div class="card-panel-description">
           <div class="card-panel-text">商品</div>
           <div>
-            <count-to :start-val="0" :end-val="panelGroup.shoeCount" :duration="2600" class="card-panel-number" />
+            <count-to :start-val="0" :end-val="Number(chartData.shoeCount)" :duration="2600" class="card-panel-number" />
             <span class="card-panel-unit"> 个</span>
           </div>
           <el-progress class="el-progress" :percentage="45" :stroke-width="4" :show-text="false" color="#326BEB"></el-progress>
@@ -23,7 +23,7 @@
         <div class="card-panel-description">
           <div class="card-panel-text">库存</div>
           <div>
-            <count-to :start-val="0" :end-val="panelGroup.sizeCount" :duration="2600" class="card-panel-number" />
+            <count-to :start-val="0" :end-val="Number(chartData.sizeCount)" :duration="2600" class="card-panel-number" />
             <span class="card-panel-unit"> 个</span>
           </div>
           <el-progress class="el-progress" :percentage="45" :stroke-width="4" :show-text="false" color="#17B6A8"></el-progress>
@@ -39,7 +39,7 @@
           <div class="card-panel-text">库存成本</div>
           <div class="card-panel-number">
             <span> ¥</span>
-            <count-to :start-val="0" :end-val="panelGroup.priceInCount/100" :duration="2600" />
+            <count-to :start-val="0" :end-val="chartData.priceInCount/100" :duration="2600" />
           </div>
           <el-progress class="el-progress" :percentage="45" :stroke-width="4" :show-text="false" color="#E1303A"></el-progress>
         </div>
@@ -53,8 +53,8 @@
         <div class="card-panel-description">
           <div class="card-panel-text">市场总利润</div>
           <div class="card-panel-number">
-            <span>{{panelGroup.profitCount >= 0?'+':'-'}}</span>
-            <count-to :start-val="0" :end-val="panelGroup.profitCount/100 | priceParse" :duration="2600" />
+            <span>{{chartData.profitCount >= 0?'+':'-'}}</span>
+            <count-to :start-val="0" :end-val="chartData.profitCount/100 | priceParse" :duration="2600" />
             <!-- <span>w</span> -->
           </div>
           <el-progress class="el-progress" :percentage="45" :stroke-width="4" :show-text="false" color="#FF9600"></el-progress>
@@ -72,7 +72,7 @@
     },
     props:{
 
-      panelGroup:{
+      chartData:{
         type:Object,
         default:()=>{
           return {

@@ -155,14 +155,11 @@ export default {
     const that = this
     getdashTop().then(response => {
       if (response.code ===0 ) {
-        console.log(response.data)
         that.allData = response.data
-        that.panelGroup = {
-          ...this.data,
-          ...response.data
-        };
+        that.panelGroup = response.data
         that.handleData(response.data)
       }
+
     })
     getLineChart().then(response => {
       if (response.code ===0 ) {
