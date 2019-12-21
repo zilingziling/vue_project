@@ -45,7 +45,7 @@ export function addSize(params) {
 // 删除仓库数据
 export function delectItem(params) {
   return request({
-    url: '/shoe/inventory/delete',
+    url: '/shoe/inventory/deleteAll',
     method: 'post',
     data:{
       ...params

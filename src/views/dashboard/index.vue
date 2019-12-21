@@ -35,7 +35,7 @@
               <img src="@/assets/index/data.png" alt="">
               <div>
                 <div class="minititle">毒到手总利润</div>
-                <div class="profit" :class="allData.monthProfitCount >= 0 ?'fc_red' :'fc_green'">{{ allData.monthProfitCount >= 0 ?'+' :'-' }}¥{{ allData.monthProfitCount/100 | toDecimal }}</div>
+                <div class="profit" :class="allData.monthProfitCount >= 0 ?'fc_red' :'fc_green'">{{ allData.monthProfitCount >= 0 ?'+' :'-' }}¥{{ Math.round(allData.monthProfitCount/100) | toDecimal }}</div>
               </div>
             </div>
           </div>
@@ -72,14 +72,14 @@
               <img style="width:30rpx;height:30px;;margin-top:-3px" src="@/assets/index/profitt.png" alt="">
               <div>
                 <div class="chart-wrapper-title">月总盈亏</div>
-                <span class="chart-wrapper-number" :class="allData.monthProfitCount >= 0 ?'fc_red' :'fc_green'">{{ allData.monthProfitCount >= 0 ?'+' :'-' }}¥{{ allData.monthProfitCount/100 | priceParse }}</span>
+                <span class="chart-wrapper-number" :class="allData.monthProfitCount >= 0 ?'fc_red' :'fc_green'">{{ allData.monthProfitCount >= 0 ?'+' :'-' }}¥{{ Math.round(allData.monthProfitCount/100) | priceParse }}</span>
               </div>
             </div>
             <div class="pie_data flex">
               <img style="width:30rpx;height:30px;;margin-top:-3px" src="@/assets/index/profita.png" alt="">
               <div>
                 <div class="chart-wrapper-title">年总盈亏</div>
-                <span class="chart-wrapper-number" :class="allData.yearProfitCount >= 0 ?'fc_red' :'fc_green'">{{ allData.yearProfitCount >= 0 ?'+' :'-' }}¥{{ allData.yearProfitCount/100 | priceParse }}</span>
+                <span class="chart-wrapper-number" :class="allData.yearProfitCount >= 0 ?'fc_red' :'fc_green'">{{ allData.yearProfitCount >= 0 ?'+' :'-' }}¥{{ Math.round(allData.yearProfitCount/100) | priceParse }}</span>
               </div>
             </div>
           </div>

@@ -66,13 +66,13 @@
       <el-table-column label="库存成本" min-width="140" align="center">
         <template slot-scope="list">
           <span class="moneyCell">￥</span>
-          <span class="numberCell">{{ list.row.priceIn/100 | toDecimal }}</span>
+          <span class="numberCell">{{ Math.round(list.row.priceIn/100) | toDecimal }}</span>
         </template>
       </el-table-column>
       <el-table-column label="毒到手总利润" min-width="140" align="center">
         <template slot-scope="list">
           <span class="moneyCell">￥</span>
-          <span class="numberCell">{{ list.row.priceDo/100 | toDecimal }}</span>
+          <span class="numberCell">{{ Math.round(list.row.priceDo/100) | toDecimal }}</span>
         </template>
       </el-table-column>
       <el-table-column label="当前盈亏" min-width="160" align="center">
@@ -96,7 +96,7 @@
                 ? 'fc_red'
                 : 'fc_green'
             "
-          >{{ list.row.priceProfit/100 | toDecimal }}</span>
+          >{{ Math.round(list.row.priceProfit/100) | toDecimal }}</span>
         </template>
       </el-table-column>
       <!--      <el-table-column-->
@@ -137,7 +137,7 @@
         <template slot-scope="list">
           <el-button type="primary" @click="goodsOption(list.row)">
             入库/卖出</el-button>
-          <div class="delectBtn" @click="delectBtn(list.row.id)">删除</div>
+          <div class="delectBtn" @click="delectBtn(list.row.shoeNum)">删除</div>
         </template>
       </el-table-column>
     </el-table>
@@ -220,7 +220,7 @@
           align="center"
         >
           <template slot-scope="logData">
-            <span class="logs_table_text">￥{{ logData.row.price/100 }}</span>
+            <span class="logs_table_text">￥{{ Math.round(logData.row.price/100) }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -528,18 +528,18 @@
             :cell-style="{ background: 'red' }"
           >
             <template slot-scope="goodSize">
-              <span>{{ goodSize.row.inPrice/100 }}</span>
+              <span>{{ Math.round(goodSize.row.inPrice/100) }}</span>
             </template>
           </el-table-column>
           <el-table-column label="入库总价" min-width="134" align="center">
             <template slot-scope="goodSize">
-              <span>{{ goodSize.row.priceIn/100 }}</span>
+              <span>{{ Math.round(goodSize.row.priceIn/100) }}</span>
             </template>
           </el-table-column>
           <el-table-column label="到手利润" min-width="130" align="center">
             <template slot-scope="goodSize">
               <span class="moneyCell">￥</span>
-              <span class="numberCell">{{ goodSize.row.priceDo/100 }}</span>
+              <span class="numberCell">{{ Math.round(goodSize.row.priceDo/100) }}</span>
             </template>
           </el-table-column>
           <!--          <el-table-column-->
@@ -841,6 +841,7 @@ export default {
     sale() {
       const that = this
       const saleData = this.saleData
+      saleData.price=saleData.price*100
       sale(saleData).then(res => {
         if (res.code === 0) {
           that.fetchData(true)
@@ -871,7 +872,7 @@ export default {
     },
     delectItem(id) {
       const that = this
-      delectItem({ id: id }).then(res => {
+      delectItem({ shoeNum: id }).then(res => {
         if (res.code === 0) {
           that.fetchData(true)
           that.$message({
@@ -977,6 +978,7 @@ export default {
       }
       addSizeData.inPrice = this.goodDetail.inPrice
       addSizeData.shoeNum = this.goodDetail.shoeNum
+      addSizeData.price=addSizeData.price*100
       addSize(addSizeData).then(res => {
         if (res.code === 0) {
           that.$message({

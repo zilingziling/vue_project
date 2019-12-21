@@ -39,7 +39,7 @@
           <div class="card-panel-text">库存成本</div>
           <div class="card-panel-number">
             <span> ¥</span>
-            <count-to :start-val="0" :end-val="chartData.priceInCount/100" :duration="2600" />
+            <count-to :start-val="0" :end-val="Math.round(chartData.priceInCount/100)" :duration="2600" />
           </div>
           <el-progress class="el-progress" :percentage="45" :stroke-width="4" :show-text="false" color="#E1303A"></el-progress>
         </div>
@@ -54,7 +54,7 @@
           <div class="card-panel-text">当前盈亏</div>
           <div class="card-panel-number">
             <span>{{chartData.profitCount >= 0?'+':'-'}}</span>
-            <count-to :start-val="0" :end-val="chartData.profitCount/100 | priceParse" :duration="2600" />
+            <count-to :start-val="0" :end-val="Math.round(chartData.profitCount/100) | priceParse" :duration="2600" />
             <!-- <span>w</span> -->
           </div>
           <el-progress class="el-progress" :percentage="45" :stroke-width="4" :show-text="false" color="#FF9600"></el-progress>

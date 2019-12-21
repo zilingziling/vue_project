@@ -35,7 +35,7 @@ Vue.config.productionTip = false
 
 Vue.filter('priceParse', price => {
   // 可以有很多的自定义过滤器
-  return Math.abs(price)
+  return Math.round(Math.abs(price))
 })
 
 Vue.filter('toDecimal', price => {
