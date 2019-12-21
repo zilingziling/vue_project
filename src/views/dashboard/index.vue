@@ -34,7 +34,7 @@
             <div class="warehouse_data_bottom">
               <img src="@/assets/index/data.png" alt="">
               <div>
-                <div class="minititle">本月利润</div>
+                <div class="minititle">毒到手总利润</div>
                 <div class="profit" :class="allData.monthProfitCount >= 0 ?'fc_red' :'fc_green'">{{ allData.monthProfitCount >= 0 ?'+' :'-' }}¥{{ allData.monthProfitCount/100 | toDecimal }}</div>
               </div>
             </div>

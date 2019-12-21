@@ -47,14 +47,14 @@ Vue.filter('toDecimal', price => {
   }
   var f = Math.round(prices * 100) / 100
   var s = f.toString()
-  var rs = s.indexOf('.')
-  if (rs < 0) {
-    rs = s.length
-    s += '.'
-  }
-  while (s.length <= rs + 2) {
-    s += '0'
-  }
+  // var rs = s.indexOf('.')
+  // if (rs < 0) {
+  //   rs = s.length
+  //   s += '.'
+  // }
+  // while (s.length <= rs + 2) {
+  //   s += '0'
+  // }
   return s
 })
 

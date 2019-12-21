@@ -3,8 +3,12 @@
     <div class="flex jus-bet">
       <div class="dashboard-text">仓库</div>
       <div class="flex">
+        <el-button class="top_button">
+          出库记录
+          <img src="@/assets/warehouse/eyes.png" alt="">
+        </el-button>
         <el-button class="top_button" @click="getLog">
-          查看添加日志
+          入库记录
           <img src="@/assets/warehouse/eyes.png" alt="">
         </el-button>
         <el-button class="top_button" @click="dialogSearchVisible = true">
@@ -17,7 +21,7 @@
       :data="list"
       :row-style="{ height: '105px' }"
       element-loading-text="Loading"
-      style="width: 100%;border-radius:12px;"
+      style="width: 100%;border-radius:12px;height: calc(100% - 100px)"
       border
       fit
       highlight-current-row
@@ -65,13 +69,13 @@
           <span class="numberCell">{{ list.row.priceIn/100 | toDecimal }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="毒到手总价" min-width="140" align="center">
+      <el-table-column label="毒到手总利润" min-width="140" align="center">
         <template slot-scope="list">
           <span class="moneyCell">￥</span>
           <span class="numberCell">{{ list.row.priceDo/100 | toDecimal }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="毒到手总利润" min-width="160" align="center">
+      <el-table-column label="当前盈亏" min-width="160" align="center">
         <template slot-scope="list">
           <span
             class="moneyCell"
@@ -369,7 +373,7 @@
             :class="item.isSelect ? 'sizeInput_select' : ''"
             @focus="sizeInputFocus(indexs)"
           />
-          <div class="size_item" @click="sizeSelf">自定义</div>
+          <!--          <div class="size_item" @click="sizeSelf">自定义</div>-->
         </div>
         <div class="size_minititle">入货价格（¥）</div>
         <el-input
@@ -532,35 +536,35 @@
               <span>{{ goodSize.row.priceIn/100 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="毒到手价" min-width="130" align="center">
+          <el-table-column label="到手利润" min-width="130" align="center">
             <template slot-scope="goodSize">
               <span class="moneyCell">￥</span>
               <span class="numberCell">{{ goodSize.row.priceDo/100 }}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            class-name="status-col"
-            label="毒到手单码利润"
-            min-width="130"
-            align="center"
-          >
-            <template slot-scope="goodSize">
-              <span
-                class="moneyCell"
-                style="font-size:18px"
-                :class="
-                  goodSize.row.priceProfit >= 0 ? 'fc_red' : 'fc_green'
-                "
-              >{{ goodSize.row.priceProfit >= 0 ? "+" : "-" }}￥</span>
-              <span
-                class="numberCell"
-                style="font-size:18px"
-                :class="
-                  goodSize.row.priceProfit >= 0 ? 'fc_red' : 'fc_green'
-                "
-              >{{ goodSize.row.priceProfit/100 | toDecimal }}</span>
-            </template>
-          </el-table-column>
+          <!--          <el-table-column-->
+          <!--            class-name="status-col"-->
+          <!--            label="毒到手单码利润"-->
+          <!--            min-width="130"-->
+          <!--            align="center"-->
+          <!--          >-->
+          <!--            <template slot-scope="goodSize">-->
+          <!--              <span-->
+          <!--                class="moneyCell"-->
+          <!--                style="font-size:18px"-->
+          <!--                :class="-->
+          <!--                  goodSize.row.priceProfit >= 0 ? 'fc_red' : 'fc_green'-->
+          <!--                "-->
+          <!--              >{{ goodSize.row.priceProfit >= 0 ? "+" : "-" }}￥</span>-->
+          <!--              <span-->
+          <!--                class="numberCell"-->
+          <!--                style="font-size:18px"-->
+          <!--                :class="-->
+          <!--                  goodSize.row.priceProfit >= 0 ? 'fc_red' : 'fc_green'-->
+          <!--                "-->
+          <!--              >{{ goodSize.row.priceProfit/100 | toDecimal }}</span>-->
+          <!--            </template>-->
+          <!--          </el-table-column>-->
           <el-table-column
             align="center"
             prop="created_at"
@@ -641,11 +645,9 @@ export default {
       p: {
         pageIndex: 1,
         pageSize: 10,
-        shoeName: '',
-        totalPages: ''
-
+        shoeName: ''
       },
-
+      totalPages: '',
       sizeList: [
         {
           value: '36',
@@ -704,7 +706,7 @@ export default {
     // 滚动事件
     handleScroll() {
       const isBottom = getScrollHeight() - (Math.round(getScrollTop()) + getWindowHeight())
-      if (isBottom === 0 && this.p.pageIndex !== this.p.totalPages) {
+      if (isBottom === 0 && this.p.pageIndex !== this.totalPages) {
         this.p.pageIndex++
         this.fetchData()
         window.scrollBy(0, -1400)
@@ -1082,7 +1084,7 @@ export default {
     },
     fetchData(replace = false) {
       this.listLoading = true
-      getList({ ...this.p }).then(response => {
+      getList({ ...this.p, pageIndex: replace ? 1 : this.p.pageIndex }).then(response => {
         // this.list = response.data.items;
         if (response.code === 0) {
           if (replace) {
@@ -1092,7 +1094,7 @@ export default {
             this.list = this.list.concat(response.data.list)
           }
           this.p.pageIndex = response.data.pageIndex
-          this.p.totalPages = response.data.totalPages
+          this.totalPages = response.data.totalPages
         }
         this.listLoading = false
       })

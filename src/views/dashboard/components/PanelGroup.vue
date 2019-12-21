@@ -51,7 +51,7 @@
           <img src="@/assets/index/profit.png" alt />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">市场总利润</div>
+          <div class="card-panel-text">当前盈亏</div>
           <div class="card-panel-number">
             <span>{{chartData.profitCount >= 0?'+':'-'}}</span>
             <count-to :start-val="0" :end-val="chartData.profitCount/100 | priceParse" :duration="2600" />
