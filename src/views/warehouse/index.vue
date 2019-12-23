@@ -3,11 +3,11 @@
     <div class="flex jus-bet">
       <div class="dashboard-text">仓库</div>
       <div class="flex">
-        <el-button class="top_button">
+        <el-button class="top_button" @click="getLog(2)">
           出库记录
           <img src="@/assets/warehouse/eyes.png" alt="">
         </el-button>
-        <el-button class="top_button" @click="getLog">
+        <el-button class="top_button" @click="getLog(1)">
           入库记录
           <img src="@/assets/warehouse/eyes.png" alt="">
         </el-button>
@@ -157,7 +157,7 @@
       :show-close="false"
       :visible.sync="dialogTableVisible"
     >
-      <div class="dialog_title">添加日志</div>
+      <div class="dialog_title">{{ this.modalName }}</div>
       <img
         class="close"
         src="@/assets/warehouse/close.png"
@@ -621,6 +621,7 @@ export default {
     return {
       Loading: false,
       logData: [],
+      modalName: '',
       searchData: [],
       search_key: '',
       inpue: '',
@@ -648,12 +649,7 @@ export default {
         shoeName: ''
       },
       totalPages: '',
-      sizeList: [
-        {
-          value: '36',
-          isSelect: true
-        }
-      ],
+      sizeList: [],
       sizeSelfData: [],
       goodDetail: {},
       goodSize: [],
@@ -743,9 +739,10 @@ export default {
       this.sizeSelfData = sizeSelfData
     },
     // 获取日志
-    getLog() {
+    getLog(mark) {
       const that = this
-      getLog({ pageSize: 10000, pageIndex: 1, type: '入库' }).then(res => {
+      that.modalName = mark === 1 ? '入库记录' : '出库记录'
+      getLog({ pageSize: 10000, pageIndex: 1, type: mark === 1 ? '入库' : '卖出' }).then(res => {
         if (res.code === 0) {
           that.logData = res.data.list
         }
@@ -797,13 +794,7 @@ export default {
       }
       return isJPG && isLt2M
     },
-    // 根据id入库
-    idStorage(item) {
-      const that = this
-      this.dialogSearchVisible = false
-      this.dialogSizeVisible = true
-      this.goodDetail = item
-      const size = item.size.split(',')
+    formatterSize(size) {
       const list = []
       size.map(i => list.push(
         {
@@ -812,6 +803,15 @@ export default {
         }
       ))
       this.sizeList = list
+    },
+    // 根据id入库
+    idStorage(item) {
+      const that = this
+      this.dialogSearchVisible = false
+      this.dialogSizeVisible = true
+      this.goodDetail = item
+      const size = item.size.split(',')
+      this.formatterSize(size)
       // this.getSizeList(item.shoeNum)
       // idStorage({ id: id }).then(res => {
       //   if (res.code == 0 && res.msg == "ok" && res.data == 1) {
@@ -841,7 +841,7 @@ export default {
     sale() {
       const that = this
       const saleData = this.saleData
-      saleData.price=saleData.price*100
+      saleData.price = saleData.price * 100
       sale(saleData).then(res => {
         if (res.code === 0) {
           that.fetchData(true)
@@ -978,7 +978,7 @@ export default {
       }
       addSizeData.inPrice = this.goodDetail.inPrice
       addSizeData.shoeNum = this.goodDetail.shoeNum
-      addSizeData.price=addSizeData.price*100
+      addSizeData.price = addSizeData.price * 100
       addSize(addSizeData).then(res => {
         if (res.code === 0) {
           that.$message({
@@ -1042,6 +1042,8 @@ export default {
     // 点击卖出
     goodsOption(item) {
       const that = this
+      const size = item.size.split(',')
+      this.formatterSize(size)
       that.dialogOptionVisible = true
       this.goodDetail = item
       getSoldList({ pageSize: 1000, pageIndex: 1, shoeNum: item.shoeNum }).then(res => {

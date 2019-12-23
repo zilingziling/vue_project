@@ -27,7 +27,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ userName: username.trim(), password: password }).then(response => {
         const { data } = response;
-        console.log(data)
         //设置cookie
         // var exdate=new Date();//获取时间
         // exdate.setTime(exdate.getTime() + 24*60*60*1000*1);//保存的天数
