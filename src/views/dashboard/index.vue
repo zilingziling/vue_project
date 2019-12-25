@@ -242,7 +242,7 @@ export default {
       font-weight: 400;
       color: rgba(153, 153, 153, 1);
       line-height: 33px;
-      margin: 20px;
+      margin: 20px 20px 0 20px;
     }
   }
   .warehouse_data {
