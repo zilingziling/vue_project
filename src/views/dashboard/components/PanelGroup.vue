@@ -3,7 +3,7 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel blue" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
-          <img src="@/assets/index/shop.png" alt />
+          <img src="@/assets/index/shop.png" alt>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">商品</div>
@@ -11,14 +11,14 @@
             <count-to :start-val="0" :end-val="Number(chartData.shoeCount)" :duration="2600" class="card-panel-number" />
             <span class="card-panel-unit"> 个</span>
           </div>
-          <el-progress class="el-progress" :percentage="45" :stroke-width="4" :show-text="false" color="#326BEB"></el-progress>
+          <el-progress class="el-progress" :percentage="45" :stroke-width="4" :show-text="false" color="#326BEB" />
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel green" @click="handleSetLineChartData('messages')">
         <div class="card-panel-icon-wrapper icon-message">
-          <img src="@/assets/index/stock.png" alt />
+          <img src="@/assets/index/stock.png" alt>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">库存</div>
@@ -26,14 +26,14 @@
             <count-to :start-val="0" :end-val="Number(chartData.sizeCount)" :duration="2600" class="card-panel-number" />
             <span class="card-panel-unit"> 个</span>
           </div>
-          <el-progress class="el-progress" :percentage="45" :stroke-width="4" :show-text="false" color="#17B6A8"></el-progress>
+          <el-progress class="el-progress" :percentage="45" :stroke-width="4" :show-text="false" color="#17B6A8" />
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel red" @click="handleSetLineChartData('purchases')">
         <div class="card-panel-icon-wrapper icon-money">
-          <img src="@/assets/index/money.png" alt />
+          <img src="@/assets/index/money.png" alt>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">库存成本</div>
@@ -41,23 +41,23 @@
             <span> ¥</span>
             <count-to :start-val="0" :end-val="Math.round(chartData.priceInCount/100)" :duration="2600" />
           </div>
-          <el-progress class="el-progress" :percentage="45" :stroke-width="4" :show-text="false" color="#E1303A"></el-progress>
+          <el-progress class="el-progress" :percentage="45" :stroke-width="4" :show-text="false" color="#E1303A" />
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel yellow" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-shopping">
-          <img src="@/assets/index/profit.png" alt />
+          <img src="@/assets/index/profit.png" alt>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">当前盈亏</div>
           <div class="card-panel-number">
-            <span>{{chartData.profitCount >= 0?'+':'-'}}</span>
+            <span>{{ chartData.profitCount >= 0?'+':'-' }}</span>
             <count-to :start-val="0" :end-val="Math.round(chartData.profitCount/100) | priceParse" :duration="2600" />
             <!-- <span>w</span> -->
           </div>
-          <el-progress class="el-progress" :percentage="45" :stroke-width="4" :show-text="false" color="#FF9600"></el-progress>
+          <el-progress class="el-progress" :percentage="45" :stroke-width="4" :show-text="false" color="#FF9600" />
         </div>
       </div>
     </el-col>
@@ -65,40 +65,40 @@
 </template>
 
 <script>
-  import CountTo from "vue-count-to";
-  export default {
-    components: {
-      CountTo
-    },
-    props:{
+import CountTo from 'vue-count-to'
+export default {
+  components: {
+    CountTo
+  },
+  props: {
 
-      chartData:{
-        type:Object,
-        default:()=>{
-          return {
-            shoeCount:0,
-            sizeCount:0,
-            priceInCount:0,
-            profitCount:0
-          }
+    chartData: {
+      type: Object,
+      default: () => {
+        return {
+          shoeCount: 0,
+          sizeCount: 0,
+          priceInCount: 0,
+          profitCount: 0
         }
-      },
-    },
-    data() {
-      return {
-
       }
-    },
-    methods: {
-      handleSetLineChartData(type) {
-        this.$emit("handleSetLineChartData", type);
-      },
-      format(percentage) {
-        return percentage === 100 ? '满' : `${percentage}%`;
-      }
-    },
+    }
+  },
+  data() {
+    return {
 
-  };
+    }
+  },
+  methods: {
+    handleSetLineChartData(type) {
+      this.$emit('handleSetLineChartData', type)
+    },
+    format(percentage) {
+      return percentage === 100 ? '满' : `${percentage}%`
+    }
+  }
+
+}
 </script>
 
 <style lang="scss" scoped>

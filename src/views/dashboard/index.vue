@@ -35,7 +35,7 @@
               <img src="@/assets/index/data.png" alt="">
               <div>
                 <div class="minititle">毒到手总利润</div>
-                <div class="profit" :class="allData.monthProfitCount >= 0 ?'fc_red' :'fc_green'">{{ allData.monthProfitCount >= 0 ?'+' :'-' }}¥{{ Math.round(allData.monthProfitCount/100) | toDecimal }}</div>
+                <div class="profit" :class="allData.priceDoCount >= 0 ?'fc_red' :'fc_green'">{{ allData.priceDoCount >= 0 ?'+' :'-' }}¥{{ Math.round(allData.priceDoCount/100) | toDecimal }}</div>
               </div>
             </div>
           </div>
@@ -112,7 +112,7 @@ import {
   mapGetters
 } from 'vuex'
 import {
-  getdashTop,getLineChart
+  getdashTop, getLineChart
 } from '@/api/user'
 import PanelGroup from './components/PanelGroup'
 import LineChart from './components/LineChart'
@@ -137,11 +137,11 @@ export default {
         yprice: []
       },
       allData: {},
-      panelGroup:{
-        shoeCount:0,
-        sizeCount:0,
-        priceInCount:0,
-        profitCount:0
+      panelGroup: {
+        shoeCount: 0,
+        sizeCount: 0,
+        priceInCount: 0,
+        profitCount: 0
       },
       pieData1: [],
       pieData2: [],
@@ -154,32 +154,29 @@ export default {
   created() {
     const that = this
     getdashTop().then(response => {
-      if (response.code ===0 ) {
+      if (response.code === 0) {
         that.allData = response.data
         that.panelGroup = response.data
         that.handleData(response.data)
       }
-
     })
     getLineChart().then(response => {
-      if (response.code ===0 ) {
+      if (response.code === 0) {
         that.handleLine(response.data)
       }
     })
   },
   methods: {
     handleSetLineChartData() {},
-    handleLine(opt){
+    handleLine(opt) {
       // const lineChartD = opt.month_total_profit_array
       const lineChartData = this.lineChartData
-
       for (let i = 0; i < opt.length; i++) {
-        lineChartData.xmonth.push(parseInt(opt[i].date))
-        lineChartData.yprice.push(opt[i].price)
+        lineChartData.xmonth.push(opt[i].date)
+        lineChartData.yprice.push(opt[i].price / 100)
       }
     },
     handleData(opt) {
-      console.log(opt.monthSellCount)
       this.pieData1 = [{
         value: opt.monthSellCount,
         name: '月销售量'
@@ -190,11 +187,11 @@ export default {
       }
       ]
       this.pieData2 = [{
-        value: opt.monthProfitCount,
+        value: opt.monthProfitCount / 100,
         name: '月总盈亏'
       },
       {
-        value: opt.yearProfitCount,
+        value: opt.yearProfitCount / 100,
         name: '年总盈亏'
       }
       ]
@@ -245,7 +242,7 @@ export default {
       font-weight: 400;
       color: rgba(153, 153, 153, 1);
       line-height: 33px;
-      margin: 20px;
+      margin: 20px 20px 0 20px;
     }
   }
   .warehouse_data {
