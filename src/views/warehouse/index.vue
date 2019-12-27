@@ -699,7 +699,6 @@ export default {
       getSize({ pageIndex: 1, pageSize: 1000, shoeNum }).then(r => {
         if (r.code === 0) {
           const list = r.data.list
-          console.log(list)
         }
       })
     },
