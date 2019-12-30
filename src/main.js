@@ -7,10 +7,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 import locale from 'element-ui/lib/locale/lang/zh-CN' // lang i18n
 
 import '@/styles/index.scss' // global css
-
 import App from './App'
 import store from './store'
 import router from './router'
+import InfiniteLoading from 'vue-infinite-loading'
 
 import '@/icons' // icon
 import '@/permission' // permission control
@@ -30,9 +30,8 @@ import '@/permission' // permission control
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
-
 Vue.config.productionTip = false
-
+Vue.use(InfiniteLoading, {})
 Vue.filter('priceParse', price => {
   // 可以有很多的自定义过滤器
   return Math.round(Math.abs(price))
@@ -64,5 +63,4 @@ new Vue({
   store,
   render: h => h(App)
 })
-
 

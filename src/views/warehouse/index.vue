@@ -71,22 +71,28 @@
       </el-table-column>
       <el-table-column label="毒到手总利润" min-width="140" align="center">
         <template slot-scope="list">
-          <span class="moneyCell" :class="
+          <span
+            class="moneyCell"
+            :class="
               list.row.priceDo > 0 || list.row.priceDo == 0
                 ? 'fc_red'
                 : 'fc_green'
-            ">
+            "
+          >
             {{
-            list.row.priceDo > 0 || list.row.priceDo == 0
-              ? "+"
-              : "-"
-          }}
+              list.row.priceDo > 0 || list.row.priceDo == 0
+                ? "+"
+                : "-"
+            }}
             ￥</span>
-          <span class="numberCell" :class="
+          <span
+            class="numberCell"
+            :class="
               list.row.priceDo > 0 || list.row.priceDo == 0
                 ? 'fc_red'
                 : 'fc_green'
-            ">{{ Math.round(list.row.priceDo/100) | toDecimal }}</span>
+            "
+          >{{ Math.round(list.row.priceDo/100) | toDecimal }}</span>
         </template>
       </el-table-column>
       <el-table-column label="当前盈亏" min-width="160" align="center">
@@ -154,6 +160,12 @@
           <div class="delectBtn" @click="delectBtn(list.row.shoeNum)">删除</div>
         </template>
       </el-table-column>
+
+      <infinite-loading
+        slot="append"
+        force-use-infinite-wrapper=".el-table__body-wrapper"
+        @infinite="handleScroll"
+      />
     </el-table>
     <el-tooltip placement="top" content="回到顶部">
       <back-to-top
@@ -616,6 +628,7 @@ import {
   getSoldList
 } from '@/api/table'
 import BackToTop from '@/components/BackToTop'
+import debounce from 'lodash'
 import { getScrollHeight, getScrollTop, getWindowHeight } from '../../utils/methods'
 export default {
   components: {
@@ -697,12 +710,12 @@ export default {
   created() {
     this.fetchData()
   },
-  mounted() {
-    window.addEventListener('scroll', this.handleScroll, true)
-  },
-  destroyed: function() {
-    window.removeEventListener('scroll', this.handleScroll) //  离开页面清除（移除）滚轮滚动事件
-  },
+  // mounted() {
+  //   window.addEventListener('scroll', this.handleScroll, true)
+  // },
+  // destroyed: function() {
+  //   window.removeEventListener('scroll', this.handleScroll) //  离开页面清除（移除）滚轮滚动事件
+  // },
   methods: {
     // 尺码
     getSizeList(shoeNum) {
@@ -714,14 +727,14 @@ export default {
     },
     // 滚动事件
     handleScroll() {
-      const isBottom = getScrollHeight() - (Math.round(getScrollTop()) + getWindowHeight())
-      if (isBottom === 0 && this.p.pageIndex !== this.totalPages) {
-        this.p.pageIndex++
-        this.fetchData()
-        window.scrollBy(0, -1400)
-      }
+      // const isBottom = getScrollHeight() - (Math.round(getScrollTop()) + getWindowHeight())
+      // if (isBottom === 0 && this.p.pageIndex !== this.totalPages) {
+      this.p.pageIndex++
+      this.fetchData()
+      // window.scrollBy(0, -1400)
+      // }
     },
-    loadMore(){
+    loadMore() {
       console.log('el-table 已经滚到底部')
       // do something
     },
@@ -1105,7 +1118,7 @@ export default {
     },
     fetchData(replace = false) {
       this.listLoading = true
-      getList({ ...this.p, pageIndex: replace ? 1 : this.p.pageIndex,shoeNum:"FW4839" }).then(response => {
+      getList({ ...this.p, pageIndex: replace ? 1 : this.p.pageIndex, shoeNum: 'FW4839' }).then(response => {
         // this.list = response.data.items;
         if (response.code === 0) {
           if (replace) {
