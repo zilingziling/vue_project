@@ -71,8 +71,22 @@
       </el-table-column>
       <el-table-column label="毒到手总利润" min-width="140" align="center">
         <template slot-scope="list">
-          <span class="moneyCell">￥</span>
-          <span class="numberCell">{{ Math.round(list.row.priceDo/100) | toDecimal }}</span>
+          <span class="moneyCell" :class="
+              list.row.priceDo > 0 || list.row.priceDo == 0
+                ? 'fc_red'
+                : 'fc_green'
+            ">
+            {{
+            list.row.priceDo > 0 || list.row.priceDo == 0
+              ? "+"
+              : "-"
+          }}
+            ￥</span>
+          <span class="numberCell" :class="
+              list.row.priceDo > 0 || list.row.priceDo == 0
+                ? 'fc_red'
+                : 'fc_green'
+            ">{{ Math.round(list.row.priceDo/100) | toDecimal }}</span>
         </template>
       </el-table-column>
       <el-table-column label="当前盈亏" min-width="160" align="center">
@@ -695,7 +709,6 @@ export default {
       getSize({ pageIndex: 1, pageSize: 1000, shoeNum }).then(r => {
         if (r.code === 0) {
           const list = r.data.list
-          console.log(list)
         }
       })
     },
@@ -707,6 +720,10 @@ export default {
         this.fetchData()
         window.scrollBy(0, -1400)
       }
+    },
+    loadMore(){
+      console.log('el-table 已经滚到底部')
+      // do something
     },
     sizeInputFocus(index) {
       const sizeList = this.sizeList
@@ -1088,7 +1105,7 @@ export default {
     },
     fetchData(replace = false) {
       this.listLoading = true
-      getList({ ...this.p, pageIndex: replace ? 1 : this.p.pageIndex }).then(response => {
+      getList({ ...this.p, pageIndex: replace ? 1 : this.p.pageIndex,shoeNum:"FW4839" }).then(response => {
         // this.list = response.data.items;
         if (response.code === 0) {
           if (replace) {
