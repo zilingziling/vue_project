@@ -16,6 +16,7 @@
         </el-button>
       </div>
     </div>
+<!--    <div class="scrollWrapper">-->
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -161,10 +162,10 @@
         </template>
       </el-table-column>
       <!--无限滚动-->
-      <mugen-scroll :handler="loadMore" :should-handle="loadSign">
-        loading...
-      </mugen-scroll>
     </el-table>
+    <mugen-scroll :handler="loadMore" :should-handle="!loadSign" />
+<!--    </div>-->
+
     <el-tooltip placement="top" content="回到顶部">
       <back-to-top
         :custom-style="myBackToTopStyle"
@@ -173,7 +174,6 @@
         transition-name="fade"
       />
     </el-tooltip>
-
     <!-- 日志弹窗 -->
     <el-dialog
       width="740"
@@ -701,7 +701,7 @@ export default {
         name: '',
         huo: ''
       },
-      loadSign: true,
+      loadSign: false
     }
   },
   watch: {},
@@ -716,19 +716,13 @@ export default {
   // },
   methods: {
     loadMore() {
-      console.log(this.loadSign)
-      if (this.loadSign) {
-        this.loadSign = false
-        this.p.pageIndex++
-        if (this.p.pageIndex > this.totalPages) {
-          return
-        }
-        this.fetchData()
-        setTimeout(() => {
-          this.loadSign = true
-        }, 1000)
-        console.log('到底了', this.p.pageIndex)
+      this.p.pageIndex++
+      if (this.p.pageIndex > this.totalPages) {
+        return
       }
+      console.log(11)
+      this.fetchData()
+      console.log('到底了', this.p.pageIndex)
     },
     // 尺码
     getSizeList(shoeNum) {
@@ -1128,7 +1122,7 @@ export default {
     },
     fetchData(replace = false) {
       this.listLoading = true
-      getList({ ...this.p, pageIndex: replace ? 1 : this.p.pageIndex, }).then(response => {
+      getList({ ...this.p, pageIndex: replace ? 1 : this.p.pageIndex }).then(response => {
         // this.list = response.data.items;
         if (response.code === 0) {
           if (replace) {
@@ -1147,6 +1141,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 .goods_wrap {
   display: flex;
   align-items: center;
@@ -1534,6 +1529,8 @@ export default {
 }
 .options_goods_detail {
   display: flex;
+  box-sizing: border-box;
+  padding-right: 1.8rem;
   .options_img {
     width: 180px;
     height: 119px;
