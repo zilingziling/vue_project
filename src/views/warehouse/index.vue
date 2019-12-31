@@ -21,7 +21,7 @@
       :data="list"
       :row-style="{ height: '105px' }"
       element-loading-text="Loading"
-      style="width: 100%;border-radius:12px;height: calc(100% - 100px)"
+      style="width: 100%;border-radius:12px"
       border
       fit
       highlight-current-row
@@ -160,12 +160,10 @@
           <div class="delectBtn" @click="delectBtn(list.row.shoeNum)">删除</div>
         </template>
       </el-table-column>
-
-      <infinite-loading
-        slot="append"
-        force-use-infinite-wrapper=".el-table__body-wrapper"
-        @infinite="handleScroll"
-      />
+      <!--无限滚动-->
+      <mugen-scroll :handler="loadMore" :should-handle="loadSign">
+        loading...
+      </mugen-scroll>
     </el-table>
     <el-tooltip placement="top" content="回到顶部">
       <back-to-top
@@ -628,11 +626,10 @@ import {
   getSoldList
 } from '@/api/table'
 import BackToTop from '@/components/BackToTop'
-import debounce from 'lodash'
-import { getScrollHeight, getScrollTop, getWindowHeight } from '../../utils/methods'
+import MugenScroll from 'vue-mugen-scroll'
 export default {
   components: {
-    BackToTop
+    BackToTop, MugenScroll
   },
   filters: {
     statusFilter(status) {
@@ -703,7 +700,8 @@ export default {
         img: '',
         name: '',
         huo: ''
-      }
+      },
+      loadSign: true,
     }
   },
   watch: {},
@@ -717,6 +715,21 @@ export default {
   //   window.removeEventListener('scroll', this.handleScroll) //  离开页面清除（移除）滚轮滚动事件
   // },
   methods: {
+    loadMore() {
+      console.log(this.loadSign)
+      if (this.loadSign) {
+        this.loadSign = false
+        this.p.pageIndex++
+        if (this.p.pageIndex > this.totalPages) {
+          return
+        }
+        this.fetchData()
+        setTimeout(() => {
+          this.loadSign = true
+        }, 1000)
+        console.log('到底了', this.p.pageIndex)
+      }
+    },
     // 尺码
     getSizeList(shoeNum) {
       getSize({ pageIndex: 1, pageSize: 1000, shoeNum }).then(r => {
@@ -734,10 +747,7 @@ export default {
       // window.scrollBy(0, -1400)
       // }
     },
-    loadMore() {
-      console.log('el-table 已经滚到底部')
-      // do something
-    },
+
     sizeInputFocus(index) {
       const sizeList = this.sizeList
       for (const i of sizeList) {
@@ -1118,13 +1128,12 @@ export default {
     },
     fetchData(replace = false) {
       this.listLoading = true
-      getList({ ...this.p, pageIndex: replace ? 1 : this.p.pageIndex, shoeNum: 'FW4839' }).then(response => {
+      getList({ ...this.p, pageIndex: replace ? 1 : this.p.pageIndex, }).then(response => {
         // this.list = response.data.items;
         if (response.code === 0) {
           if (replace) {
             this.list = response.data.list
           } else {
-            // this.list = [...this.list, ...response.data.list]
             this.list = this.list.concat(response.data.list)
           }
           this.p.pageIndex = response.data.pageIndex

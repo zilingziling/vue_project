@@ -10,10 +10,9 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
-import InfiniteLoading from 'vue-infinite-loading'
-
 import '@/icons' // icon
-import '@/permission' // permission control
+import '@/permission'
+import { getScrollHeight, getScrollTop, getWindowHeight } from './utils/methods' // permission control
 
 /**
  * If you don't want to use mock-server
@@ -31,7 +30,6 @@ import '@/permission' // permission control
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 Vue.config.productionTip = false
-Vue.use(InfiniteLoading, {})
 Vue.filter('priceParse', price => {
   // 可以有很多的自定义过滤器
   return Math.round(Math.abs(price))
@@ -63,4 +61,3 @@ new Vue({
   store,
   render: h => h(App)
 })
-
