@@ -1141,7 +1141,9 @@ export default {
 </script>
 
 <style lang="scss">
+.scrollWrapper{
 
+}
 .goods_wrap {
   display: flex;
   align-items: center;
