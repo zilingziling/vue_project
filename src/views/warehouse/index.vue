@@ -3,6 +3,8 @@
     <div class="flex jus-bet">
       <div class="dashboard-text">仓库</div>
       <div class="flex">
+        <el-input placeholder="请输入货号" clearable  icon="search" v-model="inputSearch" class="search-input">
+        </el-input>
         <el-button class="top_button" @click="getLog(2)">
           出库记录
           <img src="@/assets/warehouse/eyes.png" alt="">
@@ -19,7 +21,7 @@
 <!--    <div class="scrollWrapper">-->
     <el-table
       v-loading="listLoading"
-      :data="list"
+      :data="tables"
       :row-style="{ height: '105px' }"
       element-loading-text="Loading"
       style="width: 100%;border-radius:12px"
@@ -163,7 +165,7 @@
       </el-table-column>
       <!--无限滚动-->
     </el-table>
-    <mugen-scroll :handler="loadMore" :should-handle="!loadSign" />
+<!--    <mugen-scroll :handler="loadMore" :should-handle="!loadSign" />-->
 <!--    </div>-->
 
     <el-tooltip placement="top" content="回到顶部">
@@ -643,6 +645,7 @@ export default {
   },
   data() {
     return {
+      inputSearch:"",
       Loading: false,
       logData: [],
       modalName: '',
@@ -669,7 +672,7 @@ export default {
       // 页码
       p: {
         pageIndex: 1,
-        pageSize: 10,
+        pageSize: 10000,
         shoeName: ''
       },
       totalPages: '',
@@ -704,7 +707,17 @@ export default {
       loadSign: false
     }
   },
-  watch: {},
+  computed: {
+    tables () {
+      const inputSearch = this.inputSearch
+      if (inputSearch) {
+        return this.list.filter(dataNews => dataNews.shoeNum.includes(inputSearch))
+      }else {
+        return this.list
+      }
+
+    }
+  },
   created() {
     this.fetchData()
   },
@@ -714,6 +727,7 @@ export default {
   // destroyed: function() {
   //   window.removeEventListener('scroll', this.handleScroll) //  离开页面清除（移除）滚轮滚动事件
   // },
+
   methods: {
     loadMore() {
       this.p.pageIndex++
@@ -1190,6 +1204,13 @@ export default {
 .el-button--primary:focus {
   background-color: #f6a10f !important;
   border-color: #f6a10f;
+}
+.search-input{
+  width: auto;
+  height: 40px;
+ input{
+   border-radius: 2rem;
+ }
 }
 .top_button {
   width: 191px;
