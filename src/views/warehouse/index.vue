@@ -671,7 +671,7 @@ export default {
       // 页码
       p: {
         pageIndex: 1,
-        pageSize: 400
+        pageSize: 200
       },
       totalPages: '',
       sizeList: [],
@@ -787,7 +787,7 @@ export default {
     getLog(mark) {
       const that = this
       that.modalName = mark === 1 ? '入库记录' : '出库记录'
-      getLog({ pageSize: 10000, pageIndex: 1, type: mark === 1 ? '入库' : '卖出' }).then(res => {
+      getLog({ pageSize: 100000, pageIndex: 1, type: mark === 1 ? '入库' : '卖出' }).then(res => {
         if (res.code === 0) {
           that.logData = res.data.list
         }
@@ -953,12 +953,10 @@ export default {
       this.addSizeData = addSizeData
     },
     saleCheck_price(e) {
-      const value = e.match(/^\d*(\.?\d{0,2})/g)[0] || 0
+      const value = e.match(/^\d*(\.?\d{0,2})/g)[0]
       this.saleData.price = value
     },
     saleNumBlur(e) {
-      console.log(e.target.value)
-      console.log(this.saleMaxnum)
       const saleData = this.saleData
       if (e.target.value <= 0) {
         saleData.num = 1
@@ -1076,7 +1074,7 @@ export default {
     saleOption(data) {
       const saleData = this.saleData
       saleData.inPrice = data.inPrice
-      saleData.price = data.price
+      // saleData.price = data.price
       saleData.shoeNum = data.shoeNum
       saleData.size = data.size
       this.saleMaxnum = data.resultNum
