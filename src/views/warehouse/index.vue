@@ -3,8 +3,7 @@
     <div class="flex jus-bet">
       <div class="dashboard-text">仓库</div>
       <div class="flex">
-        <el-input placeholder="请输入货号" clearable  icon="search" v-model="inputSearch" class="search-input">
-        </el-input>
+        <el-input v-model="inputSearch" placeholder="请输入货号" clearable icon="search" class="search-input" />
         <el-button class="top_button" @click="getLog(2)">
           出库记录
           <img src="@/assets/warehouse/eyes.png" alt="">
@@ -18,7 +17,7 @@
         </el-button>
       </div>
     </div>
-<!--    <div class="scrollWrapper">-->
+    <!--    <div class="scrollWrapper">-->
     <el-table
       v-loading="listLoading"
       :data="tables"
@@ -165,8 +164,8 @@
       </el-table-column>
       <!--无限滚动-->
     </el-table>
-<!--    <mugen-scroll :handler="loadMore" :should-handle="!loadSign" />-->
-<!--    </div>-->
+    <!--    <mugen-scroll :handler="loadMore" :should-handle="!loadSign" />-->
+    <!--    </div>-->
 
     <el-tooltip placement="top" content="回到顶部">
       <back-to-top
@@ -645,7 +644,7 @@ export default {
   },
   data() {
     return {
-      inputSearch:"",
+      inputSearch: '',
       Loading: false,
       logData: [],
       modalName: '',
@@ -672,8 +671,7 @@ export default {
       // 页码
       p: {
         pageIndex: 1,
-        pageSize: 10000,
-        shoeName: ''
+        pageSize: 400
       },
       totalPages: '',
       sizeList: [],
@@ -684,7 +682,7 @@ export default {
       addSizeData: {
         size: 36,
         rid: 0,
-        price: null,
+        price: 0,
         num: 1,
         inPrice: '',
         shoeNum: ''
@@ -692,7 +690,7 @@ export default {
       saleData: {
         sizeid: 0,
         rid: 0,
-        price: null,
+        price: 0,
         size: 0,
         num: 1,
         inPrice: '',
@@ -708,14 +706,13 @@ export default {
     }
   },
   computed: {
-    tables () {
+    tables() {
       const inputSearch = this.inputSearch
       if (inputSearch) {
         return this.list.filter(dataNews => dataNews.shoeNum.includes(inputSearch))
-      }else {
+      } else {
         return this.list
       }
-
     }
   },
   created() {
@@ -892,7 +889,7 @@ export default {
       saleData.price = saleData.price * 100
       sale(saleData).then(res => {
         if (res.code === 0) {
-          that.fetchData(true)
+          that.fetchData()
           that.hideDialog()
           that.resetAddSizeData()
           that.$message({
@@ -922,7 +919,7 @@ export default {
       const that = this
       delectItem({ shoeNum: id }).then(res => {
         if (res.code === 0) {
-          that.fetchData(true)
+          that.fetchData()
           that.$message({
             type: 'success',
             message: '删除成功!'
@@ -931,7 +928,7 @@ export default {
       })
     },
     check_price(e) {
-      const value = e.match(/^\d*(\.?\d{0,2})/g)[0] || null
+      const value = e.match(/^\d*(\.?\d{0,2})/g)[0] || 0
       this.addSizeData.price = value
     },
     intNumBlur(e) {
@@ -956,7 +953,7 @@ export default {
       this.addSizeData = addSizeData
     },
     saleCheck_price(e) {
-      const value = e.match(/^\d*(\.?\d{0,2})/g)[0] || null
+      const value = e.match(/^\d*(\.?\d{0,2})/g)[0] || 0
       this.saleData.price = value
     },
     saleNumBlur(e) {
@@ -1034,7 +1031,7 @@ export default {
             type: 'success',
             customClass: 'zZindex'
           })
-          that.fetchData(true)
+          that.fetchData()
           that.dialogSizeVisible = false
           // that.dialogOptionVisible = true;
           // this.dialogSearchVisible=false
@@ -1134,17 +1131,13 @@ export default {
     headerClass(row) {
       return 'header_row'
     },
-    fetchData(replace = false) {
+    fetchData() {
       this.listLoading = true
-      getList({ ...this.p, pageIndex: replace ? 1 : this.p.pageIndex }).then(response => {
+      getList({ ...this.p }).then(response => {
         // this.list = response.data.items;
         if (response.code === 0) {
-          if (replace) {
-            this.list = response.data.list
-          } else {
-            this.list = this.list.concat(response.data.list)
-          }
-          this.p.pageIndex = response.data.pageIndex
+          this.list = response.data.list
+          // this.p.pageIndex = response.data.pageIndex
           this.totalPages = response.data.totalPages
         }
         this.listLoading = false
