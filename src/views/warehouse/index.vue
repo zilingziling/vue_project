@@ -548,15 +548,21 @@
           </el-table-column>
           <el-table-column
             label="入库单价"
-            min-width="100"
+            min-width="120"
             align="center"
             :cell-style="{ background: 'red' }"
+            :render-header="renderHeader"
           >
             <template slot-scope="goodSize">
-              <span>{{ Math.round(goodSize.row.inPrice/100) }}</span>
+              {{ singleP?Math.round(goodSize.row.inPrice/100):"※" }}
             </template>
           </el-table-column>
-          <el-table-column label="入库总价" min-width="134" align="center">
+          <el-table-column label="入库总价" min-width="120" align="center" :render-header="renderHeaderAll">
+            <template slot-scope="goodSize">
+              <span>{{ allP?Math.round(goodSize.row.priceIn/100):"※" }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="毒标价" min-width="134" align="center">
             <template slot-scope="goodSize">
               <span>{{ Math.round(goodSize.row.priceIn/100) }}</span>
             </template>
@@ -702,7 +708,9 @@ export default {
         name: '',
         huo: ''
       },
-      loadSign: false
+      loadSign: false,
+      singleP: true,
+      allP: true
     }
   },
   computed: {
@@ -726,6 +734,67 @@ export default {
   // },
 
   methods: {
+    renderHeader(h, { column }) { // h即为cerateElement的简写，具体可看vue官方文档
+      return h(
+        'div', {
+          style: {
+            display: 'flex',
+            alignItems:"center"
+          },
+          on: {
+            click: this.showSingleP
+          }
+        },
+        [
+          h('span', column.label),
+          h('img', {
+            style: {
+              flexShrink: 0,
+              width: '1.2rem',
+              height: '1.2rem',
+              marginLeft:".5rem"
+            },
+            attrs: {
+              src: this.singleP ? require('../../assets/warehouse/eyeOpen.png') : require('../../assets/warehouse/eyeClose.png')
+            }
+          })
+        ],
+      )
+    },
+    renderHeaderAll(h, { column }) { // h即为cerateElement的简写，具体可看vue官方文档
+      return h(
+        'div', {
+          style: {
+            display: 'flex',
+            alignItems:"center"
+          },
+          on: {
+            click: this.showAllP
+          }
+        },
+        [
+          h('span', column.label),
+          h('img', {
+            style: {
+              flexShrink: 0,
+              width: '1.2rem',
+              height: '1.2rem',
+              marginLeft:".5rem"
+            },
+            attrs: {
+              src: this.allP ? require('../../assets/warehouse/eyeOpen.png') : require('../../assets/warehouse/eyeClose.png')
+            }
+          })
+        ],
+      )
+    },
+
+    showSingleP() {
+      this.singleP = !this.singleP
+    },
+    showAllP() {
+      this.allP = !this.allP
+    },
     loadMore() {
       this.p.pageIndex++
       if (this.p.pageIndex > this.totalPages) {
