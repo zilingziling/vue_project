@@ -54,8 +54,6 @@ export const constantRoutes = [
       meta: { title: '首页', icon: 'dashboard' }
     }]
   },
-
-
   {
     path: '/warehouse',
     component: Layout,
@@ -68,14 +66,25 @@ export const constantRoutes = [
       }
     ]
   },
-
+  {
+    path: '/setPrice',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'SetPrice',
+        component: () => import('@/views/setPrice/index'),
+        meta: { title: '设置实体价格', icon: 'edit' }
+      }
+    ]
+  },
   {
     path: '/logout',
     component: Layout,
     children: [
       {
-        name:'Logout',
-        component:() => import('@/views/logout/index'),
+        name: 'Logout',
+        component: () => import('@/views/logout/index'),
         path: 'index',
         meta: { title: '退出登录', icon: 'exit' }
       }

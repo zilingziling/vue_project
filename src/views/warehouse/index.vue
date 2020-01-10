@@ -739,7 +739,7 @@ export default {
         'div', {
           style: {
             display: 'flex',
-            alignItems:"center"
+            alignItems: 'center'
           },
           on: {
             click: this.showSingleP
@@ -752,7 +752,7 @@ export default {
               flexShrink: 0,
               width: '1.2rem',
               height: '1.2rem',
-              marginLeft:".5rem"
+              marginLeft: '.5rem'
             },
             attrs: {
               src: this.singleP ? require('../../assets/warehouse/eyeOpen.png') : require('../../assets/warehouse/eyeClose.png')
@@ -766,7 +766,7 @@ export default {
         'div', {
           style: {
             display: 'flex',
-            alignItems:"center"
+            alignItems: 'center'
           },
           on: {
             click: this.showAllP
@@ -779,7 +779,7 @@ export default {
               flexShrink: 0,
               width: '1.2rem',
               height: '1.2rem',
-              marginLeft:".5rem"
+              marginLeft: '.5rem'
             },
             attrs: {
               src: this.allP ? require('../../assets/warehouse/eyeOpen.png') : require('../../assets/warehouse/eyeClose.png')
@@ -1215,9 +1215,6 @@ export default {
 </script>
 
 <style lang="scss">
-.scrollWrapper{
-
-}
 .goods_wrap {
   display: flex;
   align-items: center;
