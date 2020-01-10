@@ -22,17 +22,15 @@ export default {
 </script>
 <style lang="scss">
   .outWrapper{
-    width: 50vw;
-    height: 50vh;
-    margin:10vh auto 0;
+    width: 25vw;
+    height: 25vh;
+    margin:2rem 0  0 2rem;
     background: #ffffff;
-    border-radius: .5rem;
     position: relative;
     box-sizing: border-box;
-    padding: 1rem;
+    padding: 2rem;
     .form{
-      width: 60%;
-      margin:6rem auto 0;
+      margin:2rem auto 0;
       .buttons{
         text-align: center;
       }
