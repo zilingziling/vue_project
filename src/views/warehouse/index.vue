@@ -718,7 +718,7 @@ export default {
     tables() {
       const inputSearch = this.inputSearch
       if (inputSearch) {
-        return this.list.filter(dataNews => dataNews.shoeNum.includes(inputSearch))
+        return this.list.filter(dataNews => dataNews.shoeNum.toLowerCase().includes(inputSearch.toLowerCase()) || dataNews.shoeName.toLowerCase().includes(inputSearch.toLowerCase()))
       } else {
         return this.list
       }
