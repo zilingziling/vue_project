@@ -564,7 +564,8 @@
           </el-table-column>
           <el-table-column label="毒标价" min-width="134" align="center">
             <template slot-scope="goodSize">
-              <span>{{ Math.round(goodSize.row.priceIn/100) }}</span>
+              <span class="moneyCell">￥</span>
+              <span>{{ Math.round(goodSize.row.recentPrice/100) }}</span>
             </template>
           </el-table-column>
           <el-table-column label="到手利润" min-width="130" align="center">

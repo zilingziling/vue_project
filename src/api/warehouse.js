@@ -8,3 +8,15 @@ export function getWareList(data) {
   })
 }
 
+export function setPrice(price) {
+  return request({
+    url: `/phone/user/setPrice/${price}`,
+    method: 'post'
+  })
+}
+export function getPrice() {
+  return request({
+    url: '/phone/user/getPrice',
+    method: 'get'
+  })
+}
